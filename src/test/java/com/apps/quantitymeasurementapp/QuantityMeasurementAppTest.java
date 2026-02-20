@@ -1,43 +1,65 @@
 package com.apps.quantitymeasurementapp;
 
 import static org.junit.jupiter.api.Assertions.*;
-
 import org.junit.jupiter.api.Test;
 
-class QuantityMeasurementMainTest {
+class QuantityMeasurementAppTest {
 
-	@Test
-	public void testEquality_SameValue()  {
-		QuantityMeasurementApp feet1 = new QuantityMeasurementApp(10.1);
-		QuantityMeasurementApp feet2 = new QuantityMeasurementApp(10.1);
-		assertTrue(feet1.equals(feet2));
-	}
-	
-	@Test
-	public void testEquality_DifferentValue() {
-		QuantityMeasurementApp feet1 = new QuantityMeasurementApp(10.1);
-		QuantityMeasurementApp feet2 = new QuantityMeasurementApp(1.1);
-		assertFalse(feet1.equals(feet2));
-	}
+    // Feet tests
+    @Test
+    void feetSameValue() {
+        assertTrue(QuantityMeasurementApp.sameFeet(5.0, 5.0));
+    }
 
-	@Test
-	public void testEquality_NullComparison() {
-		QuantityMeasurementApp feet1 = new QuantityMeasurementApp(1.0);
-		QuantityMeasurementApp feet2 = null;
-		assertFalse(feet1.equals(feet2));;
-	}
-	
-	@Test
-	public void testEquality_NonNumericInput() {
-		assertThrows(IllegalArgumentException.class, ()-> {
-			new QuantityMeasurementApp(Double.NaN);
-		});
-	}
-	
-	@Test
-	public void testEquality_SameReference() {
-		QuantityMeasurementApp feet1 = new QuantityMeasurementApp(1.0);
-		QuantityMeasurementApp feet2 = feet1;
-		assertTrue(feet1.equals(feet2));
-	}
+    @Test
+    void feetDifferentValue() {
+        assertFalse(QuantityMeasurementApp.sameFeet(5.0, 3.0));
+    }
+
+    @Test
+    void feetNullCheck() {
+        QuantityMeasurementApp.Feet f = new QuantityMeasurementApp.Feet(1.0);
+        assertFalse(f.equals(null));
+    }
+
+    @Test
+    void feetSameReference() {
+        QuantityMeasurementApp.Feet f = new QuantityMeasurementApp.Feet(1.0);
+        QuantityMeasurementApp.Feet ref = f;
+        assertTrue(f.equals(ref));
+    }
+
+    @Test
+    void feetInvalidInput() {
+        assertThrows(IllegalArgumentException.class, () -> new QuantityMeasurementApp.Feet(Double.NaN));
+    }
+
+    // Inches tests
+    @Test
+    void inchesSameValue() {
+        assertTrue(QuantityMeasurementApp.sameInches(10.0, 10.0));
+    }
+
+    @Test
+    void inchesDifferentValue() {
+        assertFalse(QuantityMeasurementApp.sameInches(10.0, 5.0));
+    }
+
+    @Test
+    void inchesNullCheck() {
+        QuantityMeasurementApp.Inches i = new QuantityMeasurementApp.Inches(1.0);
+        assertFalse(i.equals(null));
+    }
+
+    @Test
+    void inchesSameReference() {
+        QuantityMeasurementApp.Inches i = new QuantityMeasurementApp.Inches(1.0);
+        QuantityMeasurementApp.Inches ref = i;
+        assertTrue(i.equals(ref));
+    }
+
+    @Test
+    void inchesInvalidInput() {
+        assertThrows(IllegalArgumentException.class, () -> new QuantityMeasurementApp.Inches(Double.NaN));
+    }
 }
