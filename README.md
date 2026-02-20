@@ -1,3 +1,3 @@
 # QuantityMeasurementApp
 
-dev
+feature/UC2-InchEquality
