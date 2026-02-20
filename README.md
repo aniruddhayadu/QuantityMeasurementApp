@@ -1,3 +1,3 @@
 # QuantityMeasurementApp
 
-feature/UC1-FeetEquality
+feature/UC2-InchEquality
