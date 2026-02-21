@@ -1,3 +1,3 @@
 # QuantityMeasurementApp
 
-feature/UC6-UnitAddition
+feature/UC7-TargetUnitAddition
