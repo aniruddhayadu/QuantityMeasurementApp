@@ -1,3 +1,3 @@
 # QuantityMeasurementApp
 
-feature/UC3-GenericQuantityClassForDRYPrinciple
+UC3-GenericLength
