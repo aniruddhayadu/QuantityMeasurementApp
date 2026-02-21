@@ -99,6 +99,7 @@ public class QuantityMeasurementApp {
             System.out.print("Enter first value: ");
             double val1 = scanner.nextDouble();
             System.out.print("Enter first unit (FEET/INCH): ");
+            
             LengthUnit unit1 = LengthUnit.valueOf(scanner.next().toUpperCase());
 
             // Input second measurement
@@ -108,6 +109,7 @@ public class QuantityMeasurementApp {
             LengthUnit unit2 = LengthUnit.valueOf(scanner.next().toUpperCase());
 
             // UC3 generic comparison
+            
             boolean result = compareQuantity(val1, unit1, val2, unit2);
             System.out.println("Comparison result: " + result);
 
