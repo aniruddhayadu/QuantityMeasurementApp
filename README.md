@@ -1,3 +1,3 @@
 # QuantityMeasurementApp
 
-feature/UC2-InchEquality
+feature/UC3-GenericQuantityClassForDRYPrinciple
