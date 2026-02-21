@@ -13,9 +13,6 @@ public class Length {
 
     private static final double EPSILON = 1e-6;
 
-    /**
-     * Supported units with conversion factor relative to INCHES.
-     */
     public enum LengthUnit {
         INCHES(1.0),
         FEET(12.0),
@@ -44,62 +41,66 @@ public class Length {
         this.unit = unit;
     }
 
-    public double getValue() {
-        return value;
-    }
+    public double getValue() { return value; }
 
-    public LengthUnit getUnit() {
-        return unit;
-    }
+    public LengthUnit getUnit() { return unit; }
 
     /* =========================
-       UC5 Conversion Methods
+       Conversion (UC5)
        ========================= */
-
-    public static double convert(double value, LengthUnit source, LengthUnit target) {
-        if (!Double.isFinite(value))
-            throw new IllegalArgumentException("Value must be finite");
-
-        if (source == null || target == null)
-            throw new IllegalArgumentException("Units cannot be null");
-
-        double valueInBase = value * source.getFactor();
-        return valueInBase / target.getFactor();
-    }
-
-    public Length convertTo(LengthUnit targetUnit) {
-        double converted = convert(this.value, this.unit, targetUnit);
-        return new Length(converted, targetUnit);
-    }
 
     private double toBaseUnit() {
         return value * unit.getFactor();
     }
 
+    public Length convertTo(LengthUnit targetUnit) {
+        if (targetUnit == null)
+            throw new IllegalArgumentException("Target unit cannot be null");
+
+        double baseValue = this.toBaseUnit();
+        double converted = baseValue / targetUnit.getFactor();
+        return new Length(converted, targetUnit);
+    }
+
     /* =========================
-       UC6 ADDITION
+       UC6 – Addition (implicit target)
        ========================= */
 
-    /**
-     * Adds another length to this length.
-     * Result is returned in the unit of the first operand (this.unit).
-     */
     public Length add(Length other) {
+        return addInternal(other, this.unit);
+    }
+
+    /* =========================
+       UC7 – Addition with Explicit Target
+       ========================= */
+
+    public Length add(Length other, LengthUnit targetUnit) {
+        if (targetUnit == null)
+            throw new IllegalArgumentException("Target unit cannot be null");
+
+        return addInternal(other, targetUnit);
+    }
+
+    /* =========================
+       Private Utility Method (DRY)
+       ========================= */
+
+    private Length addInternal(Length other, LengthUnit targetUnit) {
 
         if (other == null)
             throw new IllegalArgumentException("Second operand cannot be null");
 
-        // Convert both to base unit (INCHES)
+        // Normalize both to base (INCHES)
         double sumInBase = this.toBaseUnit() + other.toBaseUnit();
 
-        // Convert back to this unit
-        double resultValue = sumInBase / this.unit.getFactor();
+        // Convert to target unit
+        double resultValue = sumInBase / targetUnit.getFactor();
 
-        return new Length(resultValue, this.unit);
+        return new Length(resultValue, targetUnit);
     }
 
     /* =========================
-       Equality (epsilon-based)
+       Equality
        ========================= */
 
     @Override
