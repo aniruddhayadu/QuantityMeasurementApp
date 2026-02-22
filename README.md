@@ -1,3 +1,3 @@
 # QuantityMeasurementApp
 
-feature/UC8-StandaloneUnit
+feature/UC9-WeightMeasurement
