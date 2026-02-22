@@ -20,6 +20,8 @@
 
 ## Git Workflow
 
+---
+```
 main
  └── dev
       ├── feature/UC1-FeetEquality
@@ -31,6 +33,8 @@ main
       ├── feature/UC7-Addition-With-Target-Unit-Specification
       ├── feature/UC8-StandaloneUnit-Refactoring
       └── feature/UC9-WeightMeasurement
+```
+
 ---
 
 ## Feature History
