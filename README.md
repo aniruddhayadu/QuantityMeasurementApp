@@ -1,6 +1,3 @@
-# QuantityMeasurementApp
-
---- 
 
 📅 17 Feb 2026  
 🔹 UC1 – Feet Equality Verification  
