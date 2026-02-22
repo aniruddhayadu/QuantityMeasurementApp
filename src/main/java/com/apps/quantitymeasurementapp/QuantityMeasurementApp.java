@@ -1,80 +1,86 @@
 package com.apps.quantitymeasurementapp;
 
+import quantityMeasurement.LengthUnit;
+
+import java.time.Year;
+
 public class QuantityMeasurementApp {
+	
+	// Create a generic method to demonstrate Length equality check
+	public static boolean demonstrateLengthEquality(Length length1, Length length2) {
+		System.out.println("Equal (" + length1.compare(length2) + ")");
+		return length1.equals(length2);
+	}
+		
+	// Create a static method to take in method parameters and  demonstrate equality check
+	public static boolean demonstrateLengthComparison(Length length1, Length length2) {
+		System.out.println("Compare (" + length1.compare(length2) + ")");
+		return length1.compare(length2);
+	}
+	
+	// Demonstrate length conversion from one unit to another
+	public static Length demonstrateLengthConversion(double value, LengthUnit fromUnit, LengthUnit toUnit) {
+		Length length = new Length(value, fromUnit);
+		
+		return length.convertTo(toUnit);
+	}
+	
+	// Overloading length conversion from length object to another length object
+	public static Length demonstrateLengthConversion(Length length, LengthUnit toUnit) {
+		return length.convertTo(toUnit);
+	}
 
-    /**
-     * Demonstrates addition with explicit target unit (UC7)
-     */
-    public static Length demonstrateAddition(
-            Length length1,
-            Length length2,
-            Length.LengthUnit targetUnit) {
+	// Demonstrate addition of second length to first length
+	public static Length demonstrateLengthAddition(Length length1, Length length2){
+		return length1.add(length2);
+	}
 
-        if (length1 == null || length2 == null) {
-            throw new IllegalArgumentException("Operands cannot be null");
-        }
+	// Demonstrate addition of second length to first length with target unit.
+	public static Length demonstrateLengthAddition(Length length1, Length length2, LengthUnit targetUnit){
+		return length1.add(length2, targetUnit);
+	}
 
-        Length result = length1.add(length2, targetUnit);
+	// Main method
+	public static void main(String[] args) {
+		// Demonstrate convertion Quantity(1.0, FEET).convertTo(INCHES)
+		Length l1 = new Length(1.0, LengthUnit.FEET);
+		System.out.println(demonstrateLengthConversion(l1, LengthUnit.INCHES));
+		// Expected: Quantity(12.0, INCHES)
 
-        System.out.println("add(" + length1 + ", "
-                + length2 + ", "
-                + targetUnit + ") = " + result);
+		// Quantity(1.0, FEET).add(Quantity(12.0, INCHES), FEET)
+		Length l2 = new Length(12.0, LengthUnit.INCHES);
+		System.out.println(demonstrateLengthAddition(l1, l2, LengthUnit.FEET));
+		// Expected: Quantity(2.0, FEET)
 
-        return result;
-    }
+		// Quantity(36.0, INCHES).equals(Quantity(1.0, YARDS))
+		Length l3 = new Length(36.0, LengthUnit.INCHES);
+		Length l4 = new Length(1.0, LengthUnit.YARDS);
+		demonstrateLengthEquality(l3, l4);
+		// Expected: true
 
-    public static void main(String[] args) {
+		// Quantity(1.0, YARDS).add(Quantity(3.0, FEET), YARDS)
+		Length l5 = new Length(1.0, LengthUnit.YARDS);
+		Length l6 = new Length(3.0, LengthUnit.FEET);
+		System.out.println(demonstrateLengthAddition(l5, l6, LengthUnit.YARDS));
+		// Expected: Quantity(2.0, YARDS)
 
-        System.out.println("===== UC7: Addition with Target Unit Specification =====");
+		// Quantity(2.54, CENTIMETERS).convertTo(INCHES)
+		Length l7 = new Length(2.54, LengthUnit.CENTIMETERS);
+		System.out.println(demonstrateLengthConversion(l7, LengthUnit.INCHES));
+		// Expected: Quantity(~1.0, INCHES)
 
-        // FEET target
-        demonstrateAddition(
-                new Length(1.0, Length.LengthUnit.FEET),
-                new Length(12.0, Length.LengthUnit.INCHES),
-                Length.LengthUnit.FEET);
+		// Quantity(5.0, FEET).add(Quantity(0.0, INCHES), FEET)
+		Length l8 = new Length(5.0, LengthUnit.FEET);
+		Length l9 = new Length(0.0, LengthUnit.INCHES);
+		System.out.println(demonstrateLengthAddition(l8, l9, LengthUnit.FEET));
+		// Expected: Quantity(5.0, FEET)
 
-        // INCHES target
-        demonstrateAddition(
-                new Length(1.0, Length.LengthUnit.FEET),
-                new Length(12.0, Length.LengthUnit.INCHES),
-                Length.LengthUnit.INCHES);
+		// LengthUnit.FEET.convertToBaseUnit(12.0)
+		System.out.println(LengthUnit.FEET.convertToBaseUnit(12.0));
+		// Expected: 12.0
 
-        // YARDS target
-        demonstrateAddition(
-                new Length(1.0, Length.LengthUnit.FEET),
-                new Length(12.0, Length.LengthUnit.INCHES),
-                Length.LengthUnit.YARDS);
-
-        //  Yard + Feet → YARDS
-        demonstrateAddition(
-                new Length(1.0, Length.LengthUnit.YARDS),
-                new Length(3.0, Length.LengthUnit.FEET),
-                Length.LengthUnit.YARDS);
-
-        // Inches + Yard → FEET
-        demonstrateAddition(
-                new Length(36.0, Length.LengthUnit.INCHES),
-                new Length(1.0, Length.LengthUnit.YARDS),
-                Length.LengthUnit.FEET);
-
-        //  Centimeter + Inch → CENTIMETERS
-        demonstrateAddition(
-                new Length(2.54, Length.LengthUnit.CENTIMETERS),
-                new Length(1.0, Length.LengthUnit.INCHES),
-                Length.LengthUnit.CENTIMETERS);
-
-        // Zero case
-        demonstrateAddition(
-                new Length(5.0, Length.LengthUnit.FEET),
-                new Length(0.0, Length.LengthUnit.INCHES),
-                Length.LengthUnit.YARDS);
-
-        // 8️⃣ Negative case
-        demonstrateAddition(
-                new Length(5.0, Length.LengthUnit.FEET),
-                new Length(-2.0, Length.LengthUnit.FEET),
-                Length.LengthUnit.INCHES);
-
-        System.out.println("===== UC7 Demo Completed =====");
-    }
+		// LengthUnit.INCHES.convertToBaseUnit(12.0)
+		System.out.println(LengthUnit.INCHES.convertToBaseUnit(12.0));
+		// Expected: 1.0
+	}
 }
