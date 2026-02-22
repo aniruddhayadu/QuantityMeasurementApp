@@ -22,3 +22,5 @@ Branch: feature/UC8-StandaloneUnit
 - Established a reusable architectural pattern for multiple measurement categories
 
 [Source Code](https://github.com/aniruddhayadu/QuantityMeasurementApp/tree/feature/UC8-StandaloneUnit/src)
+
+---
