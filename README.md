@@ -2,11 +2,21 @@
 
 --- 
 
-**UC1: Basic Length Representation**
+📅 17 Feb 2026  
+🔹 UC1 – Feet Equality Verification  
+Branch: feature/UC1-FeetEquality
 
- - Introduced Length objects with value and unit.
- - Supports Feet, Inches, Yards, Centimeters.
- - Ensures type safety and basic validation for numeric values.
- - Provides foundational class structure for later use cases.
+🎯 Objective
 
---- 
+- Check if two measurements in Feet are equal
+- Correctly override equals() for comparison
+- Apply Test-Driven Development principles
+
+✅ Implementation
+
+- Defined Feet class for encapsulating measurement
+- Added precise equality logic using Double.compare()
+- Ensured null safety and type validation
+- Created comprehensive JUnit 5 tests
+
+[Source Code](https://github.com/aniruddhayadu/QuantityMeasurementApp/tree/feature/UC1-FeetEquality/src)
