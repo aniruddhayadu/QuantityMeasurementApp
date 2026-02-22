@@ -2,123 +2,102 @@ package com.apps.quantitymeasurementapp;
 
 import java.util.Objects;
 
-/**
- * Immutable Length value object.
- * Base unit: INCHES
- */
 public class Length {
+	// Instance Variable
+	private double value;
+	private LengthUnit unit;
 
-    private final double value;
-    private final LengthUnit unit;
+	// Constructor to initialize length value and unit
+	public Length(double value, LengthUnit unit) {
 
-    private static final double EPSILON = 1e-6;
+		if(!Double.isFinite(value)) {
+			throw new IllegalArgumentException("Value must be finite");
+		}
+		if(unit == null) {
+			throw new IllegalArgumentException("Unit cannot be null");
+		}
+		this.value = value;
+		this.unit = unit;
+	}
+	public double getValue(){return value;}
+	public LengthUnit getUnit(){return unit;}
+	
+	// Compare two length objects for equality based on their values in the base unit
+	public boolean compare(Length thatLength) {
+		if(thatLength == null) {return false;}
 
-    public enum LengthUnit {
-        INCHES(1.0),
-        FEET(12.0),
-        YARDS(36.0),
-        CENTIMETERS(0.393701);
+		return Double.compare(this.unit.convertToBaseUnit(this.value), thatLength.unit.convertToBaseUnit(thatLength.value)) == 0;
+	}
+	
+	@Override
+	public boolean equals(Object o) {
+		
+		// Reference check
+		if(o == this) {return true;}
 
-        private final double factor;
+		// Null check and Same class check
+		if(o == null || o.getClass() != this.getClass()) {return false;}
+		
+		
+		// Cast
+		Length length = (Length) o;
+		return Double.compare(this.unit.convertToBaseUnit(this.value), length.unit.convertToBaseUnit(length.value)) == 0;
+	}
+	
+	@Override
+	public int hashCode() {
+		return Objects.hash(this.unit.convertToBaseUnit(this.value));
+	}
+	
+	// Convert the length to a specific target unit
+	public Length convertTo(LengthUnit targetUnit) {
+		if(targetUnit == null) {
+			throw new IllegalArgumentException("Target unit connot be null");
+		}
+		
+		double baseValue = this.unit.convertToBaseUnit(this.value);
+		double convertValue = baseValue / targetUnit.getConversionFactor();
+		
+		return new Length(round(convertValue), targetUnit);
+	}
 
-        LengthUnit(double factor) {
-            this.factor = factor;
-        }
+	// Add a length to this length and return to the unit of this instance
+	public Length add(Length thatLength){
+		return addAndConvert(thatLength, this.unit);
+	}
 
-        public double getFactor() {
-            return factor;
-        }
-    }
+	// Overload add method to convert the result to a specific target
+	public Length add(Length length, LengthUnit targetUnit){
+		return addAndConvert(length, targetUnit);
+	}
 
-    public Length(double value, LengthUnit unit) {
-        if (!Double.isFinite(value))
-            throw new IllegalArgumentException("Value must be finite");
+	// Add the length value and return it in inch unit
+	private Length addAndConvert(Length length, LengthUnit targetUnit){
+		Length thisToInch = this.convertTo(LengthUnit.INCHES);
+		Length thatToInch = length.convertTo(LengthUnit.INCHES);
 
-        if (unit == null)
-            throw new IllegalArgumentException("Unit cannot be null");
+		Length totalLength = new Length(round(thisToInch.value + thatToInch.value), LengthUnit.INCHES);
+		return totalLength.convertTo(targetUnit);
+	}
 
-        this.value = value;
-        this.unit = unit;
-    }
+	//
+	private double convertToBaseUnit(){
+		return unit.convertToBaseUnit(value);
+	}
 
-    public double getValue() { return value; }
+	//
+	private double convertFromBaseToTargetUnit(double lengthInInches, LengthUnit targetUnit){
+		return targetUnit.convertFromBaseUnit(lengthInInches);
+	}
+	
+	// Round the values to the two decimal places
+	private double round(double value) {
+		return (double)Math.round(value*100)/100;
+	}
+	
+	@Override
+	public String toString() {
+		return String.format("%.2f %s", value, unit);
+	}
 
-    public LengthUnit getUnit() { return unit; }
-
-    /* =========================
-       Conversion (UC5)
-       ========================= */
-
-    private double toBaseUnit() {
-        return value * unit.getFactor();
-    }
-
-    public Length convertTo(LengthUnit targetUnit) {
-        if (targetUnit == null)
-            throw new IllegalArgumentException("Target unit cannot be null");
-
-        double baseValue = this.toBaseUnit();
-        double converted = baseValue / targetUnit.getFactor();
-        return new Length(converted, targetUnit);
-    }
-
-    /* =========================
-       UC6 – Addition (implicit target)
-       ========================= */
-
-    public Length add(Length other) {
-        return addInternal(other, this.unit);
-    }
-
-    /* =========================
-       UC7 – Addition with Explicit Target
-       ========================= */
-
-    public Length add(Length other, LengthUnit targetUnit) {
-        if (targetUnit == null)
-            throw new IllegalArgumentException("Target unit cannot be null");
-
-        return addInternal(other, targetUnit);
-    }
-
-    /* =========================
-       Private Utility Method (DRY)
-       ========================= */
-
-    private Length addInternal(Length other, LengthUnit targetUnit) {
-
-        if (other == null)
-            throw new IllegalArgumentException("Second operand cannot be null");
-
-        // Normalize both to base (INCHES)
-        double sumInBase = this.toBaseUnit() + other.toBaseUnit();
-
-        // Convert to target unit
-        double resultValue = sumInBase / targetUnit.getFactor();
-
-        return new Length(resultValue, targetUnit);
-    }
-
-    /* =========================
-       Equality
-       ========================= */
-
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj) return true;
-        if (!(obj instanceof Length)) return false;
-
-        Length other = (Length) obj;
-        return Math.abs(this.toBaseUnit() - other.toBaseUnit()) < EPSILON;
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(toBaseUnit());
-    }
-
-    @Override
-    public String toString() {
-        return value + " " + unit;
-    }
 }
