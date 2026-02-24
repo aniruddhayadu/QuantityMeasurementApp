@@ -67,12 +67,6 @@ public class Quantity<U extends IMeasurable> {
 	    // Value comparison with a small delta for double precision errors
 	    return Math.abs(baseValue1 - baseValue2) < 0.0001;
 	}
-	// Always override hashCode when overriding equals
-	@Override
-	public int hashCode() {
-	    double baseValue = this.unit.convertToBaseUnit(this.value);
-	    return Double.hashCode(baseValue);
-	}
 	
 	@Override
 	public String toString() {
