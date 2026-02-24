@@ -1,3 +1,3 @@
 # QuantityMeasurementApp
 
-feature/UC9-WeightMeasurement
+feature/UC10-GenericQuantity
