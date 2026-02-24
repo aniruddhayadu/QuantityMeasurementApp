@@ -1,32 +1,40 @@
 package com.apps.quantitymeasurementapp;
 
-/**
- * Standalone WeightUnit enum.
- * Base unit: KILOGRAM
- */
-public enum WeightUnit {
+public enum WeightUnit implements IMeasurable{
+	KILOGRAM(1.0),
+    // 1 Gram = 0.001 Kilograms
+    GRAM(0.001),
+    // 1 Milligram = 0.000001 Kilograms
+    MILLIGRAM(0.000001),
+    // 1 Tonne = 1000 Kilograms
+    TONNE(1000.0),
+    // 1 Pound = 0.453592 Kilograms
+    POUND(0.453592);
+	
+	private double conversion;
+	
+	WeightUnit(double conversion){
+		this.conversion = conversion;
+	}
+	
+	@Override
+	public double convertToBaseUnit(double value) {
+		return ((value*this.getConversionFactor())*100.0)/100.0;
+	}
 
-    KILOGRAM(1.0),
-    GRAM(0.001),          // 1 g = 0.001 kg
-    POUND(0.453592);      // 1 lb ≈ 0.453592 kg
+	@Override
+	public double getConversionFactor() {
+		return conversion;
+	}
 
-    private final double conversionFactor; // to kilogram
 
-    WeightUnit(double conversionFactor) {
-        this.conversionFactor = conversionFactor;
-    }
+	@Override
+	public double convertFromBaseUnit(double baseValue) {
+		return baseValue/this.getConversionFactor();
+	}
 
-    public double getConversionFactor() {
-        return conversionFactor;
-    }
-
-    // Convert value in this unit → base unit (kg)
-    public double convertToBaseUnit(double value) {
-        return value * conversionFactor;
-    }
-
-    // Convert value from base unit (kg) → this unit
-    public double convertFromBaseUnit(double baseValue) {
-        return baseValue / conversionFactor;
-    }
+	@Override
+	public String getUnitName() {
+		return WeightUnit.this.toString();
+	}
 }
