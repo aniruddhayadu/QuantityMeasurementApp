@@ -45,6 +45,37 @@ public class Quantity<U extends IMeasurable> {
 		return new Quantity<>((part1+part2),targetUnit);
 	}
 	
+	//subtract method
+	public Quantity<U> subtract(Quantity<U> other){
+		double part1 = this.unit.convertToBaseUnit(this.value);
+		double part2 = other.unit.convertToBaseUnit(other.value);
+		
+		double baseResult = part1-part2;
+		double finalResult = this.unit.convertFromBaseUnit(baseResult);
+		return new Quantity<>(finalResult,this.unit);
+	}
+	
+	//subtract method for specific unit
+	public Quantity<U> subtract(Quantity<U> other, U targetUnit){
+		double part1 = this.unit.convertToBaseUnit(this.value);
+		double part2 = other.unit.convertToBaseUnit(other.value);
+		
+		double baseResult = part1-part2;
+		double finalResult = targetUnit.convertFromBaseUnit(baseResult);
+		return new Quantity<>(finalResult,targetUnit);
+	}
+	
+	//division
+	public double divide(Quantity<U> other){
+		double part1 = this.unit.convertToBaseUnit(this.value);
+		double part2 = other.unit.convertToBaseUnit(other.value);
+		if (part2 == 0) {
+	        throw new ArithmeticException("Cannot divide by zero");
+		}
+		double baseResult = part1/part2;
+		return baseResult;
+	}
+	
 	//equals
 	@Override
 	public boolean equals(Object obj) {
@@ -77,10 +108,17 @@ public class Quantity<U extends IMeasurable> {
 		Quantity<LengthUnit> unit1 = new Quantity<>(3.0,LengthUnit.FEET);
 		System.out.println(unit1.convertTo(LengthUnit.INCHES));
 		
-		Quantity<LengthUnit> unit2 = new Quantity<>(24.0,LengthUnit.INCHES);
+		Quantity<LengthUnit> unit2 = new Quantity<>(48.0,LengthUnit.INCHES);
 		Quantity<LengthUnit> unit3 = new Quantity<>(24.0,LengthUnit.INCHES);
 		System.out.println(unit2.add(unit3));
 		
 		System.out.println(unit2.add(unit3, LengthUnit.FEET));
+		
+		//subtract
+		System.out.println(unit1.subtract(unit2));
+		System.out.println(unit1.subtract(unit2,LengthUnit.INCHES));
+		
+		//division
+		System.out.println(unit1.divide(unit3));
 	}
 }
