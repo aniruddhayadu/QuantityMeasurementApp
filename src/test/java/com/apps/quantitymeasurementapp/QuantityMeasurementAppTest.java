@@ -22,7 +22,7 @@ class QuantityMeasurementMainTest<U extends IMeasurable> {
 	Quantity<VolumeUnit> v2;
 	
 	@Test
-    public void testEquality_SameUnitAndValue_ShouldReturnTrue() {
+    public void testEquality_SameUnitAndValue_ShouldReturnTrue() throws InvalidUnitMeasurementException {
         Quantity<LengthUnit> feet1 = new Quantity<>(10.0, LengthUnit.FEET);
         Quantity<LengthUnit> feet2 = new Quantity<>(10.0, LengthUnit.FEET);
         
@@ -31,7 +31,7 @@ class QuantityMeasurementMainTest<U extends IMeasurable> {
     }
 
     @Test
-    public void testEquality_DifferentUnitsSameValue_ShouldReturnTrue() {
+    public void testEquality_DifferentUnitsSameValue_ShouldReturnTrue() throws InvalidUnitMeasurementException {
         Quantity<LengthUnit> oneFeet = new Quantity<>(1.0, LengthUnit.FEET);
         Quantity<LengthUnit> twelveInches = new Quantity<>(12.0, LengthUnit.INCHES);
         
@@ -39,7 +39,7 @@ class QuantityMeasurementMainTest<U extends IMeasurable> {
     }
 
     @Test
-    public void testEquality_DifferentValues_ShouldReturnFalse() {
+    public void testEquality_DifferentValues_ShouldReturnFalse() throws InvalidUnitMeasurementException {
         Quantity<LengthUnit> feet1 = new Quantity<>(10.0, LengthUnit.FEET);
         Quantity<LengthUnit> feet2 = new Quantity<>(1.1, LengthUnit.FEET);
         
@@ -56,7 +56,7 @@ class QuantityMeasurementMainTest<U extends IMeasurable> {
     }
 
     @Test
-    public void testEquality_SameReference_ShouldReturnTrue() {
+    public void testEquality_SameReference_ShouldReturnTrue() throws InvalidUnitMeasurementException {
         Quantity<LengthUnit> feet1 = new Quantity<>(1.0, LengthUnit.FEET);
         Quantity<LengthUnit> feet2 = feet1;
         
@@ -66,7 +66,7 @@ class QuantityMeasurementMainTest<U extends IMeasurable> {
     // --- Conversion Tests ---
 
     @Test
-    public void testConversion_YardToInches() {
+    public void testConversion_YardToInches() throws InvalidUnitMeasurementException {
         Quantity<LengthUnit> yard = new Quantity<>(1.0, LengthUnit.YARD);
         Quantity<LengthUnit> result = QuantityMeasurementApp.demonstrateConversion(yard, LengthUnit.INCHES);
         
@@ -75,7 +75,7 @@ class QuantityMeasurementMainTest<U extends IMeasurable> {
     }
 
     @Test
-    public void testConversion_FeetToCm() {
+    public void testConversion_FeetToCm() throws InvalidUnitMeasurementException {
         Quantity<LengthUnit> foot = new Quantity<>(1.0, LengthUnit.FEET);
         Quantity<LengthUnit> result = QuantityMeasurementApp.demonstrateConversion(foot, LengthUnit.CENTIMETERS);
         
@@ -85,7 +85,7 @@ class QuantityMeasurementMainTest<U extends IMeasurable> {
     // --- Addition Tests ---
 
     @Test
-    public void testAddition_TwoDifferentUnits() {
+    public void testAddition_TwoDifferentUnits() throws InvalidUnitMeasurementException {
         Quantity<LengthUnit> feet = new Quantity<>(1.0, LengthUnit.FEET); // 12 inches
         Quantity<LengthUnit> inches = new Quantity<>(2.0, LengthUnit.INCHES);
         
@@ -98,7 +98,7 @@ class QuantityMeasurementMainTest<U extends IMeasurable> {
 
     @ParameterizedTest
     @ValueSource(doubles = {1.0, 2.0, 5.0})
-    public void testMultipleFeetToInchesEquality(double value) {
+    public void testMultipleFeetToInchesEquality(double value) throws InvalidUnitMeasurementException {
         Quantity<LengthUnit> feet = new Quantity<>(value, LengthUnit.FEET);
         Quantity<LengthUnit> inches = new Quantity<>(value * 12, LengthUnit.INCHES);
         
@@ -184,7 +184,7 @@ class QuantityMeasurementMainTest<U extends IMeasurable> {
 	}
 
 	@Test
-	public void convertFeetToInches() {
+	public void convertFeetToInches() throws InvalidUnitMeasurementException {
 		Quantity<LengthUnit> lengthInches = QuantityMeasurementApp
 	            .demonstrateConversion(new Quantity<>(3.0, LengthUnit.FEET), LengthUnit.INCHES);
 		Quantity<LengthUnit> expectedInches = new Quantity<LengthUnit>(36.0, LengthUnit.INCHES);
@@ -193,7 +193,7 @@ class QuantityMeasurementMainTest<U extends IMeasurable> {
 	}
 
 	@Test
-	public void convertYardToInchesUsingOverloadMethod() {
+	public void convertYardToInchesUsingOverloadMethod() throws InvalidUnitMeasurementException {
 		Quantity<LengthUnit> lengthInYard = new Quantity<LengthUnit>(2.0, LengthUnit.YARD);
 		Quantity<LengthUnit> lengthInInches = QuantityMeasurementApp
 	            .demonstrateConversion(lengthInYard, LengthUnit.INCHES);
@@ -203,7 +203,7 @@ class QuantityMeasurementMainTest<U extends IMeasurable> {
 	}
 
 	@Test
-	public void addFeetAndInches() {
+	public void addFeetAndInches() throws InvalidUnitMeasurementException {
 		Quantity<LengthUnit> Feet = new Quantity<>(1.0, LengthUnit.FEET);
 	    Quantity<LengthUnit> Inches = new Quantity<>(24.0, LengthUnit.INCHES);
 	    Quantity<LengthUnit> output = QuantityMeasurementApp.demonstrateAddition(Feet, Inches);
@@ -212,7 +212,7 @@ class QuantityMeasurementMainTest<U extends IMeasurable> {
 	}
 
 	@Test
-	void addFeetAndInchesWithTargetUnitInches() {
+	void addFeetAndInchesWithTargetUnitInches() throws InvalidUnitMeasurementException {
 		Quantity<LengthUnit> Feet = new Quantity<>(1.0, LengthUnit.FEET);
 	    Quantity<LengthUnit> Inches = new Quantity<>(24.0, LengthUnit.INCHES);
 	    Quantity<LengthUnit> output = QuantityMeasurementApp
@@ -346,7 +346,7 @@ class QuantityMeasurementMainTest<U extends IMeasurable> {
 	//Verifies that Quantity(2.20462, POUND).convertTo(KILOGRAM) returns Quantity(~1.0, KILOGRAM) (within epsilon).
 	//Tests: Conversion from pound to kilogram.
 	@Test
-	public void testConversion_PoundToKilogram() {
+	public void testConversion_PoundToKilogram() throws InvalidUnitMeasurementException {
 		w1 = new Quantity<>(2.20462,WeightUnit.POUND);
 		Quantity<WeightUnit> output = QuantityMeasurementApp.demonstrateConversion(w1, WeightUnit.KILOGRAM);
 		Quantity<WeightUnit> result = new Quantity<>(1.0,WeightUnit.KILOGRAM);
@@ -356,7 +356,7 @@ class QuantityMeasurementMainTest<U extends IMeasurable> {
 	//Verifies that Quantity(1.0, KILOGRAM).convertTo(POUND) returns Quantity(~2.20462, POUND) (within epsilon).
 	//Tests: Conversion from kilogram to pound.
 	@Test
-	public void testConversion_KilogramToPound() {
+	public void testConversion_KilogramToPound() throws InvalidUnitMeasurementException {
 		w1 = new Quantity<>(1.0,WeightUnit.KILOGRAM);
 		Quantity<WeightUnit> output = QuantityMeasurementApp.demonstrateConversion(w1, WeightUnit.POUND);
 		Quantity<WeightUnit> result = new Quantity<>(2.20462,WeightUnit.POUND);
@@ -366,7 +366,7 @@ class QuantityMeasurementMainTest<U extends IMeasurable> {
 	//Verifies that Quantity(5.0, KILOGRAM).convertTo(KILOGRAM) returns Quantity(5.0, KILOGRAM).
 	//Tests: Converting to the same unit returns unchanged value.
 	@Test
-	public void testConversion_SameUnit() {
+	public void testConversion_SameUnit() throws InvalidUnitMeasurementException {
 		w1 = new Quantity<>(5.0,WeightUnit.KILOGRAM);
 		Quantity<WeightUnit> output = QuantityMeasurementApp.demonstrateConversion(w1, WeightUnit.KILOGRAM);
 		Quantity<WeightUnit> result = new Quantity<>(5.0,WeightUnit.KILOGRAM);
@@ -376,7 +376,7 @@ class QuantityMeasurementMainTest<U extends IMeasurable> {
 	//Verifies that Quantity(0.0, KILOGRAM).convertTo(GRAM) returns Quantity(0.0, GRAM).
 	//Tests: Zero value conversion across units.
 	@Test
-	public void testConversion_ZeroValue() {
+	public void testConversion_ZeroValue() throws InvalidUnitMeasurementException {
 		w1 = new Quantity<>(0.0,WeightUnit.KILOGRAM);
 		Quantity<WeightUnit> output = QuantityMeasurementApp.demonstrateConversion(w1, WeightUnit.GRAM);
 		Quantity<WeightUnit> result = new Quantity<>(0.0,WeightUnit.GRAM);
@@ -386,7 +386,7 @@ class QuantityMeasurementMainTest<U extends IMeasurable> {
 	//Verifies that Quantity(-1.0, KILOGRAM).convertTo(GRAM) returns Quantity(-1000.0, GRAM).
 	//Tests: Negative weight conversion preserves sign.
 	@Test
-	public void testConversion_NegativeValue() {
+	public void testConversion_NegativeValue() throws InvalidUnitMeasurementException {
 		w1 = new Quantity<>(-1.0,WeightUnit.KILOGRAM);
 		Quantity<WeightUnit> output = QuantityMeasurementApp.demonstrateConversion(w1, WeightUnit.GRAM);
 		Quantity<WeightUnit> result = new Quantity<>(-1000.0,WeightUnit.GRAM);
@@ -396,7 +396,7 @@ class QuantityMeasurementMainTest<U extends IMeasurable> {
 	//Verifies that Quantity (1.5, KILOGRAM).convertTo(GRAM) .convertTo(KILOGRAM) returns Quantity(~1.5, KILOGRAM) (within epsilon).
 	//Tests: Round-trip conversions preserve value within floating-point tolerance.
 	@Test
-	public void testConversion_RoundTrip() {
+	public void testConversion_RoundTrip() throws InvalidUnitMeasurementException {
 		w1 = new Quantity<>(1.5,WeightUnit.KILOGRAM);
 		Quantity<WeightUnit> output = QuantityMeasurementApp.demonstrateConversion(w1, WeightUnit.GRAM);
 		Quantity<WeightUnit> result = new Quantity<>(1.5,WeightUnit.KILOGRAM);
@@ -406,7 +406,7 @@ class QuantityMeasurementMainTest<U extends IMeasurable> {
 	//Verifies that Quantity(1.0, KILOGRAM).add(Quantity(2.0, KILOGRAM)) returns Quantity(3.0, KILOGRAM).
 	//Tests: Same-unit addition without conversion.
 	@Test
-	public void testAddition_SameUnit_KilogramPlusKilogram() {
+	public void testAddition_SameUnit_KilogramPlusKilogram() throws InvalidUnitMeasurementException {
 		w1 = new Quantity<>(1.0,WeightUnit.KILOGRAM);
 		w2 = new Quantity<>(2.0,WeightUnit.KILOGRAM);
 		Quantity<WeightUnit> output = QuantityMeasurementApp.demonstrateAddition(w1, w2);
@@ -417,7 +417,7 @@ class QuantityMeasurementMainTest<U extends IMeasurable> {
 	//Verifies that Quantity(1.0, KILOGRAM).equals(Quantity(1.0, KILOGRAM)) returns true.
 	//Tests: equals() returns true for identical kilogram measurements.
 	@Test
-	public void testAddition_CrossUnit_KilogramPlusGram() {
+	public void testAddition_CrossUnit_KilogramPlusGram() throws InvalidUnitMeasurementException {
 		w1 = new Quantity<>(1.0,WeightUnit.KILOGRAM);
 		w2 = new Quantity<>(1.0,WeightUnit.KILOGRAM);
 		assertTrue(w1.equals(w2));
@@ -426,7 +426,7 @@ class QuantityMeasurementMainTest<U extends IMeasurable> {
 	//Verifies that Quantity(1.0, KILOGRAM).add(Quantity(1000.0, GRAM)) returns Quantity(2.0, KILOGRAM).
 	//Tests: Cross-unit addition will result in the first operand's unit.
 	@Test
-	public void testLengthUnitEnum_InchesConstant() {
+	public void testLengthUnitEnum_InchesConstant() throws InvalidUnitMeasurementException {
 		w1 = new Quantity<>(1.0,WeightUnit.KILOGRAM);
 		w2 = new Quantity<>(1000.0,WeightUnit.GRAM);
 		Quantity<WeightUnit> output = QuantityMeasurementApp.demonstrateAddition(w1, w2);
@@ -437,7 +437,7 @@ class QuantityMeasurementMainTest<U extends IMeasurable> {
 	//Verifies that Quantity(2.20462, POUND).add(Quantity(1.0, KILOGRAM)) returns Quantity(~4.40924, POUND).
 	//Tests: Cross-unit addition with mixed metric and imperial units.
 	@Test
-	public void testAddition_CrossUnit_PoundPlusKilogram() {
+	public void testAddition_CrossUnit_PoundPlusKilogram() throws InvalidUnitMeasurementException {
 		w1 = new Quantity<>(2.20462,WeightUnit.POUND);
 		w2 = new Quantity<>(1.0,WeightUnit.KILOGRAM);
 		Quantity<WeightUnit> output = QuantityMeasurementApp.demonstrateAddition(w1, w2);
@@ -448,7 +448,7 @@ class QuantityMeasurementMainTest<U extends IMeasurable> {
 	//Verifies that Quantity(1.0, KILOGRAM).add(Quantity(1000.0, GRAM), GRAM) returns Quantity(2000.0, GRAM).
 	//Tests: Explicit target unit specification in gram.
 	@Test
-	public void testAddition_ExplicitTargetUnit_Kilogram() {
+	public void testAddition_ExplicitTargetUnit_Kilogram() throws InvalidUnitMeasurementException {
 		w1 = new Quantity<>(1.0,WeightUnit.KILOGRAM);
 		w2 = new Quantity<>(1000.0,WeightUnit.GRAM);
 		Quantity<WeightUnit> output = QuantityMeasurementApp.demonstrateAddition(w1, w2, WeightUnit.GRAM);
@@ -459,7 +459,7 @@ class QuantityMeasurementMainTest<U extends IMeasurable> {
 	//Verifies that Quantity(1.0, KILOGRAM).add(Quantity(1000.0, GRAM)) equals Quantity(1000.0, GRAM).add(Quantity(1.0, KILOGRAM)) in their respective units.
 	//Tests: Addition is commutative with appropriate unit conversions.
 	@Test
-	public void testAddition_Commutativity() {
+	public void testAddition_Commutativity() throws InvalidUnitMeasurementException {
 		w1 = new Quantity<>(1.0,WeightUnit.KILOGRAM);
 		w2 = new Quantity<>(1000.0,WeightUnit.GRAM);
 		Quantity<WeightUnit> output1 = QuantityMeasurementApp.demonstrateAddition(w1, w2);
@@ -470,7 +470,7 @@ class QuantityMeasurementMainTest<U extends IMeasurable> {
 	//Verifies that Quantity(5.0, KILOGRAM).add(Quantity(0.0, GRAM)) returns Quantity(5.0, KILOGRAM).
 	//Tests: Adding zero acts as an identity element.
 	@Test
-	public void testAddition_WithZero() {
+	public void testAddition_WithZero() throws InvalidUnitMeasurementException {
 		w1 = new Quantity<>(5.0,WeightUnit.KILOGRAM);
 		w2 = new Quantity<>(0.0,WeightUnit.GRAM);
 		Quantity<WeightUnit> output1 = QuantityMeasurementApp.demonstrateAddition(w1, w2);
@@ -481,7 +481,7 @@ class QuantityMeasurementMainTest<U extends IMeasurable> {
 	//Verifies that Quantity(5.0, KILOGRAM).add(Quantity(-2000.0, GRAM)) returns Quantity(3.0, KILOGRAM).
 	//Tests: Addition with negative measurements.
 	@Test
-	public void testAddition_NegativeValues() {
+	public void testAddition_NegativeValues() throws InvalidUnitMeasurementException {
 		w1 = new Quantity<>(5.0,WeightUnit.KILOGRAM);
 		w2 = new Quantity<>(-2000.0,WeightUnit.GRAM);
 		Quantity<WeightUnit> output1 = QuantityMeasurementApp.demonstrateAddition(w1, w2);
@@ -492,7 +492,7 @@ class QuantityMeasurementMainTest<U extends IMeasurable> {
 	//Verifies that Quantity(1e6, KILOGRAM).add(Quantity(1e6, KILOGRAM)) returns Quantity(2e6, KILOGRAM).
 	//Tests: Addition with large magnitude values.
 	@Test
-	public void testAddition_LargeValues() {
+	public void testAddition_LargeValues() throws InvalidUnitMeasurementException {
 		w1 = new Quantity<>(1e6,WeightUnit.KILOGRAM);
 		w2 = new Quantity<>(1e6,WeightUnit.KILOGRAM);
 		Quantity<WeightUnit> output1 = QuantityMeasurementApp.demonstrateAddition(w1, w2);
@@ -634,7 +634,7 @@ class QuantityMeasurementMainTest<U extends IMeasurable> {
 	}
 
 	@Test
-	public void testConversion_LitreToMillilitre() {
+	public void testConversion_LitreToMillilitre() throws InvalidUnitMeasurementException {
 		v1 = new Quantity<>(1.0, VolumeUnit.LITRE);
 		Quantity<VolumeUnit> result = QuantityMeasurementApp.demonstrateConversion(v1, VolumeUnit.MILLILITRE);
 		Quantity<VolumeUnit> expected = new Quantity<>(1000.0, VolumeUnit.MILLILITRE);		
@@ -642,7 +642,7 @@ class QuantityMeasurementMainTest<U extends IMeasurable> {
 	}
 
 	@Test
-	public void testConversion_MillilitreToLitre() {
+	public void testConversion_MillilitreToLitre() throws InvalidUnitMeasurementException {
 		v1 = new Quantity<>(1000.0, VolumeUnit.MILLILITRE);
 		Quantity<VolumeUnit> result = QuantityMeasurementApp.demonstrateConversion(v1, VolumeUnit.LITRE);
 		Quantity<VolumeUnit> expected = new Quantity<>(1.0, VolumeUnit.LITRE);		
@@ -650,7 +650,7 @@ class QuantityMeasurementMainTest<U extends IMeasurable> {
 	}
 	
 	@Test
-	public void testConversion_GallonToLitre() {
+	public void testConversion_GallonToLitre() throws InvalidUnitMeasurementException {
 		v1 = new Quantity<>(1.0, VolumeUnit.GALLON);
 		Quantity<VolumeUnit> result = QuantityMeasurementApp.demonstrateConversion(v1, VolumeUnit.LITRE);
 		Quantity<VolumeUnit> expected = new Quantity<>(3.78541, VolumeUnit.LITRE);		
@@ -659,7 +659,7 @@ class QuantityMeasurementMainTest<U extends IMeasurable> {
 	
 
 	@Test
-	public void testConversion_LitreToGallon() {
+	public void testConversion_LitreToGallon() throws InvalidUnitMeasurementException {
 		v1 = new Quantity<>(3.78541, VolumeUnit.LITRE);
 		Quantity<VolumeUnit> result = QuantityMeasurementApp.demonstrateConversion(v1, VolumeUnit.GALLON);
 		Quantity<VolumeUnit> expected = new Quantity<>(1.0, VolumeUnit.GALLON);		
@@ -667,7 +667,7 @@ class QuantityMeasurementMainTest<U extends IMeasurable> {
 	}
 
 	@Test
-	public void testConversion_MillilitreToGallon() {
+	public void testConversion_MillilitreToGallon() throws InvalidUnitMeasurementException {
 		v1 = new Quantity<>(1000.0, VolumeUnit.MILLILITRE);
 		Quantity<VolumeUnit> result = QuantityMeasurementApp.demonstrateConversion(v1, VolumeUnit.GALLON);
 		Quantity<VolumeUnit> expected = new Quantity<>(0.264172, VolumeUnit.GALLON);		
@@ -675,7 +675,7 @@ class QuantityMeasurementMainTest<U extends IMeasurable> {
 	}
 	
 	@Test
-	public void testAddition_SameUnit_LitrePlusLitre() {
+	public void testAddition_SameUnit_LitrePlusLitre() throws InvalidUnitMeasurementException {
 		v1 = new Quantity<>(1.0, VolumeUnit.LITRE);
 		v2 = new Quantity<>(1.0, VolumeUnit.LITRE);
 		Quantity<VolumeUnit> result = QuantityMeasurementApp.demonstrateAddition(v1, v2);
@@ -684,7 +684,7 @@ class QuantityMeasurementMainTest<U extends IMeasurable> {
 	}
 	
 	@Test
-	public void testAddition_SameUnit_MillilitrePlusMillilitre() {
+	public void testAddition_SameUnit_MillilitrePlusMillilitre() throws InvalidUnitMeasurementException {
 		v1 = new Quantity<>(1000.0, VolumeUnit.MILLILITRE);
 		v2 = new Quantity<>(1000.0, VolumeUnit.MILLILITRE);
 		Quantity<VolumeUnit> result = QuantityMeasurementApp.demonstrateAddition(v1, v2);
@@ -693,7 +693,7 @@ class QuantityMeasurementMainTest<U extends IMeasurable> {
 	}
 	
 	@Test
-	public void testAddition_CrossUnit_LitrePlusMillilitre() {
+	public void testAddition_CrossUnit_LitrePlusMillilitre() throws InvalidUnitMeasurementException {
 		v1 = new Quantity<>(1.0, VolumeUnit.LITRE);
 		v2 = new Quantity<>(4000.0, VolumeUnit.MILLILITRE);
 		Quantity<VolumeUnit> result = QuantityMeasurementApp.demonstrateAddition(v1, v2);
@@ -702,7 +702,7 @@ class QuantityMeasurementMainTest<U extends IMeasurable> {
 	}
 
 	@Test
-	public void testAddition_CrossUnit_MillilitrePlusLitre() {
+	public void testAddition_CrossUnit_MillilitrePlusLitre() throws InvalidUnitMeasurementException {
 		v1 = new Quantity<>(3000.0, VolumeUnit.MILLILITRE);
 		v2 = new Quantity<>(2.0, VolumeUnit.LITRE);
 		Quantity<VolumeUnit> result = QuantityMeasurementApp.demonstrateAddition(v1, v2);
@@ -711,7 +711,7 @@ class QuantityMeasurementMainTest<U extends IMeasurable> {
 	}
 
 	@Test
-	public void testAddition_CrossUnit_GallonPlusLitre() {
+	public void testAddition_CrossUnit_GallonPlusLitre() throws InvalidUnitMeasurementException {
 		v1 = new Quantity<>(1.0, VolumeUnit.GALLON);
 		v2 = new Quantity<>(1.0, VolumeUnit.LITRE);
 		Quantity<VolumeUnit> result = QuantityMeasurementApp.demonstrateAddition(v1, v2);
@@ -720,7 +720,7 @@ class QuantityMeasurementMainTest<U extends IMeasurable> {
 	}
 	
 	@Test
-	public void testAddition_ExplicitTargetUnit_Litre() {
+	public void testAddition_ExplicitTargetUnit_Litre() throws InvalidUnitMeasurementException {
 		v1 = new Quantity<>(2000.0, VolumeUnit.MILLILITRE);
 		v2 = new Quantity<>(3.0, VolumeUnit.LITRE);
 		Quantity<VolumeUnit> result = QuantityMeasurementApp.demonstrateAddition(v1, v2, VolumeUnit.LITRE);
@@ -729,7 +729,7 @@ class QuantityMeasurementMainTest<U extends IMeasurable> {
 	}
 
 	@Test
-	public void testAddition_ExplicitTargetUnit_Millilitre() {
+	public void testAddition_ExplicitTargetUnit_Millilitre() throws InvalidUnitMeasurementException {
 		v1 = new Quantity<>(2000.0, VolumeUnit.MILLILITRE);
 		v2 = new Quantity<>(3.0, VolumeUnit.LITRE);
 		Quantity<VolumeUnit> result = QuantityMeasurementApp.demonstrateAddition(v1, v2, VolumeUnit.MILLILITRE);
@@ -738,7 +738,7 @@ class QuantityMeasurementMainTest<U extends IMeasurable> {
 	}
 	
 	@Test
-	public void testAddition_ExplicitTargetUnit_Gallon() {
+	public void testAddition_ExplicitTargetUnit_Gallon() throws InvalidUnitMeasurementException {
 		v1 = new Quantity<>(1000.0, VolumeUnit.MILLILITRE);
 		v2 = new Quantity<>(2.78541, VolumeUnit.LITRE);
 		Quantity<VolumeUnit> result = QuantityMeasurementApp.demonstrateAddition(v1, v2, VolumeUnit.GALLON);
@@ -747,7 +747,7 @@ class QuantityMeasurementMainTest<U extends IMeasurable> {
 	}
 
 	@Test
-	public void testAddition_Commutativitys() {
+	public void testAddition_Commutativitys() throws InvalidUnitMeasurementException {
 		v1 = new Quantity<>(1000.0, VolumeUnit.MILLILITRE);
 		v2 = new Quantity<>(2.78541, VolumeUnit.LITRE);
 		Quantity<VolumeUnit> result2 = QuantityMeasurementApp.demonstrateAddition(v1, v2, VolumeUnit.GALLON);
@@ -775,7 +775,7 @@ class QuantityMeasurementMainTest<U extends IMeasurable> {
 	}
 
 	@Test
-	public void testConvertToBaseUnit_LitreToLitre() {
+	public void testConvertToBaseUnit_LitreToLitre() throws InvalidUnitMeasurementException {
 		v1 = new Quantity<>(1.0, VolumeUnit.LITRE);
 		Quantity<VolumeUnit> result = QuantityMeasurementApp.demonstrateConversion(v1, VolumeUnit.LITRE);
 		Quantity<VolumeUnit> expected = new Quantity<>(1.0, VolumeUnit.LITRE);		
@@ -783,7 +783,7 @@ class QuantityMeasurementMainTest<U extends IMeasurable> {
 	}	
 
 	@Test
-	public void testConvertToBaseUnit_MillilitreToLitre() {
+	public void testConvertToBaseUnit_MillilitreToLitre() throws InvalidUnitMeasurementException {
 		v1 = new Quantity<>(5000.0, VolumeUnit.MILLILITRE);
 		Quantity<VolumeUnit> result = QuantityMeasurementApp.demonstrateConversion(v1, VolumeUnit.LITRE);
 		Quantity<VolumeUnit> expected = new Quantity<>(5.0, VolumeUnit.LITRE);		
@@ -791,7 +791,7 @@ class QuantityMeasurementMainTest<U extends IMeasurable> {
 	}
 
 	@Test
-	public void testConvertToBaseUnit_GallonToLitre() {
+	public void testConvertToBaseUnit_GallonToLitre() throws InvalidUnitMeasurementException {
 		v1 = new Quantity<>(1.0, VolumeUnit.GALLON);
 		Quantity<VolumeUnit> result = QuantityMeasurementApp.demonstrateConversion(v1, VolumeUnit.LITRE);
 		Quantity<VolumeUnit> expected = new Quantity<>(3.78541, VolumeUnit.LITRE);		
@@ -799,7 +799,7 @@ class QuantityMeasurementMainTest<U extends IMeasurable> {
 	}
 
 	@Test
-	public void testConvertFromBaseUnit_LitreToLitre() {
+	public void testConvertFromBaseUnit_LitreToLitre() throws InvalidUnitMeasurementException {
 		v1 = new Quantity<>(1.0, VolumeUnit.LITRE);
 		Quantity<VolumeUnit> result = QuantityMeasurementApp.demonstrateConversion(v1, VolumeUnit.LITRE);
 		Quantity<VolumeUnit> expected = new Quantity<>(1.0, VolumeUnit.LITRE);		
@@ -807,7 +807,7 @@ class QuantityMeasurementMainTest<U extends IMeasurable> {
 	}
 
 	@Test
-	public void testConvertFromBaseUnit_LitreToMillilitre() {
+	public void testConvertFromBaseUnit_LitreToMillilitre() throws InvalidUnitMeasurementException {
 		v1 = new Quantity<>(1.0, VolumeUnit.LITRE);
 		Quantity<VolumeUnit> result = QuantityMeasurementApp.demonstrateConversion(v1, VolumeUnit.MILLILITRE);
 		Quantity<VolumeUnit> expected = new Quantity<>(1000.0, VolumeUnit.MILLILITRE);		
@@ -815,7 +815,7 @@ class QuantityMeasurementMainTest<U extends IMeasurable> {
 	}
 
 	@Test
-	public void testConvertFromBaseUnit_LitreToGallon() {
+	public void testConvertFromBaseUnit_LitreToGallon() throws InvalidUnitMeasurementException {
 		v1 = new Quantity<>(3.78541, VolumeUnit.LITRE);
 		Quantity<VolumeUnit> result = QuantityMeasurementApp.demonstrateConversion(v1, VolumeUnit.GALLON);
 		Quantity<VolumeUnit> expected = new Quantity<>(1.0, VolumeUnit.GALLON);		
@@ -823,7 +823,7 @@ class QuantityMeasurementMainTest<U extends IMeasurable> {
 	}
 	
 	@Test
-	public void testBackwardCompatibility_AllUC1Through10Tests() {
+	public void testBackwardCompatibility_AllUC1Through10Tests() throws InvalidUnitMeasurementException {
 		Quantity<LengthUnit> feet1 = new Quantity<>(10.0, LengthUnit.FEET);
         Quantity<LengthUnit> feet2 = new Quantity<>(10.0, LengthUnit.FEET);
         
@@ -836,7 +836,7 @@ class QuantityMeasurementMainTest<U extends IMeasurable> {
 	}
 	
 	@Test
-	public void testGenericQuantity_VolumeOperations_Consistency() {
+	public void testGenericQuantity_VolumeOperations_Consistency() throws InvalidUnitMeasurementException {
 		Quantity<VolumeUnit> v1 = new Quantity<>(1.0, VolumeUnit.LITRE);
         Quantity<VolumeUnit> v2 = new Quantity<>(1000.0, VolumeUnit.MILLILITRE);
         assertTrue(v1.equals(v2));
@@ -856,7 +856,7 @@ class QuantityMeasurementMainTest<U extends IMeasurable> {
 	}
 
 	@Test
-	public void testScalability_VolumeIntegration() {
+	public void testScalability_VolumeIntegration() throws InvalidUnitMeasurementException {
 		Quantity<VolumeUnit> v1 = new Quantity<>(1.0, VolumeUnit.GALLON);
         Quantity<VolumeUnit> v2 = new Quantity<>(3.78541, VolumeUnit.LITRE);
         assertTrue(v1.equals(v2));
