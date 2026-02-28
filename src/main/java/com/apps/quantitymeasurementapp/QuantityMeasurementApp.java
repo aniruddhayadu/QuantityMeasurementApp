@@ -3,30 +3,30 @@ package com.apps.quantitymeasurementapp;
 public class QuantityMeasurementApp {
 	
 	//generic method
-	public static <U extends IMeasurable> boolean demonstrateEquality(Quantity<U> q1, Quantity<U> q2) {
+	public static <U extends IMeasurable> boolean demonstrateEquality(Quantity<U> q1, Quantity<U> q2) throws InvalidUnitMeasurementException {
 		if(q1==null || q2 ==null || (q1.getUnit().getClass()!=q2.getUnit().getClass())) {
-			throw new IllegalArgumentException("Null Object or illegealarguement exception!");
+			throw new InvalidUnitMeasurementException("Null Object or illegealarguement exception!");
 		}
 		return q1.equals(q2);
 	}
 	
-	public static <U extends IMeasurable> Quantity<U> demonstrateConversion(Quantity<U> q, U targetUnit) {
+	public static <U extends IMeasurable> Quantity<U> demonstrateConversion(Quantity<U> q, U targetUnit) throws InvalidUnitMeasurementException{
 		if(q==null || targetUnit ==null ) {
-			throw new IllegalArgumentException("Null Object!");
+			throw new InvalidUnitMeasurementException("Null Object!");
 		}
 		return new Quantity<>(q.convertTo(targetUnit), targetUnit);
 	}
 	
-	public static <U extends IMeasurable> Quantity<U> demonstrateAddition(Quantity<U> q1, Quantity<U> q2) {
+	public static <U extends IMeasurable> Quantity<U> demonstrateAddition(Quantity<U> q1, Quantity<U> q2) throws InvalidUnitMeasurementException{
 		if(q1==null || q2 ==null || (q1.getUnit().getClass()!=q2.getUnit().getClass())) {
-			throw new IllegalArgumentException("Null Object or illegealarguement exception!");
+			throw new InvalidUnitMeasurementException("Null Object or illegealarguement exception!");
 		}
 		return q1.add(q2);
 	}
 	
-	public static <U extends IMeasurable> Quantity<U> demonstrateAddition(Quantity<U> q1, Quantity<U> q2, U targetUnit) {
+	public static <U extends IMeasurable> Quantity<U> demonstrateAddition(Quantity<U> q1, Quantity<U> q2, U targetUnit) throws InvalidUnitMeasurementException{
 		if(q1==null || q2 ==null || targetUnit==null || (q1.getUnit().getClass()!=q2.getUnit().getClass())) {
-			throw new IllegalArgumentException("Null Object or illegealarguement exception!");
+			throw new InvalidUnitMeasurementException("Null Object or illegealarguement exception!");
 		}
 		return q1.add(q2, targetUnit);
 	}
@@ -55,7 +55,7 @@ public class QuantityMeasurementApp {
 		return q1.divide(q2);
 	}
 	
-	public static void main(String[] args) throws IllegalArgumentException {		
+	public static void main(String[] args) throws InvalidUnitMeasurementException {		
 		//Domonstrate Feet to Inches
 		System.out.println(demonstrateEquality(new Quantity<>(1,LengthUnit.FEET), new Quantity<>(12,LengthUnit.INCHES)));
 		
@@ -194,7 +194,6 @@ public class QuantityMeasurementApp {
 		                new Quantity<>(2.0, WeightUnit.KILOGRAM),
 			                new Quantity<>(4.0, WeightUnit.POUND),
 			                	WeightUnit.KILOGRAM));
-
 		
 		//uc12
 		Quantity<LengthUnit> q1 = new Quantity<>(10.0, LengthUnit.FEET);
