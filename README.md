@@ -26,13 +26,18 @@ main
  └── dev
       ├── feature/UC1-FeetEquality
       ├── feature/UC2-InchEquality
-      ├── feature/UC3-GenericQuantityClassForDRYPrinciple
-      ├── feature/UC4-Extended-Unit-Support
-      ├── feature/UC5-Unit-to-Unit-Conversion
-      ├── feature/UC6-Addition-Of-Two-Length-Units
-      ├── feature/UC7-Addition-With-Target-Unit-Specification
-      ├── feature/UC8-StandaloneUnit-Refactoring
-      └── feature/UC9-WeightMeasurement
+      ├── feature/UC3-GenericLength
+      ├── feature/UC4-YardEquality
+      ├── feature/UC5-UnitConversion
+      ├── feature/UC6-UnitAddition
+      ├── feature/UC7-TargetUnitAddition
+      ├── feature/UC8-StandaloneUnit
+      ├── feature/UC9-WeightMeasurement
+      ├── feature/UC10-GenericQuantityAbstraction
+      ├── feature/UC11-VolumeMeasurement
+      ├── feature/UC12-SubtractionAndDivision
+      ├── feature/UC13-ArithmeticValidation
+      └── feature/UC14-temperature-measurement
 ```
 
 ---
@@ -282,3 +287,190 @@ Branch: feature/UC9-WeightMeasurement
 [Source Code](https://github.com/aniruddhayadu/QuantityMeasurementApp/tree/feature/UC9-WeightMeasurement/src?authuser=0)
 
 ---
+
+
+📅 23 Feb 2026  
+
+**🔹 UC10 – Generic Quantity Abstraction for Multi-Category Support  **
+Branch: feature/UC10-GenericQuantityAbstraction
+
+🎯 Objective
+
+- Eliminate duplication between QuantityLength and QuantityWeight  
+- Introduce a common abstraction for all measurement categories  
+- Apply DRY principle across the entire application  
+- Improve scalability for future categories (Volume, Temperature)  
+- Maintain immutability and type safety  
+- Ensure full backward compatibility with UC1–UC9  
+
+✅ Implementation
+
+- Introduced IMeasurable interface:
+  - getConversionFactor()
+  - convertToBaseUnit(double value)
+  - convertFromBaseUnit(double baseValue)
+  - getUnitName()
+- Refactored LengthUnit and WeightUnit to implement IMeasurable
+- Created unified Quantity class:
+  - Immutable, private final fields for value and unit
+  - Validation: non-null unit and finite numeric value
+  - Equality: converts both operands to base unit before comparison
+  - Prevents cross-category comparison using getUnitName()
+  - Generic convertTo(IMeasurable targetUnit) method
+  - Generic addition logic reusable across categories
+- Removed duplicated logic from separate length and weight implementations
+- Category type safety preserved
+- Backward-compatible architecture:
+  - UC1–UC9 functionality remains unaffected
+  - Established scalable foundation for Volume and Temperature categories  
+
+[Source Code](https://github.com/aniruddhayadu/QuantityMeasurementApp/tree/feature/UC10-GenericQuantity/src)
+
+---
+
+📅 24 Feb 2026  
+
+**🔹 UC11 – Volume Measurement Equality, Conversion, and Addition (Litre, Millilitre, Gallon)  **
+Branch: feature/UC11-VolumeMeasurement
+
+🎯 Objective
+
+- Introduce **volume measurement category** alongside length and weight  
+- Support units: LITRE (L, base), MILLILITRE (mL), GALLON (gal)  
+- Implement equality comparison, unit conversion, and addition for volume  
+- Maintain immutability and type safety  
+- Demonstrate scalability of generic Quantity architecture for new measurement categories  
+
+✅ Implementation
+
+- `VolumeUnit` enum as standalone class:
+  - Constants: LITRE, MILLILITRE, GALLON
+  - Conversion factors relative to base unit (litre)
+  - Methods: `convertToBaseUnit()`, `convertFromBaseUnit()`
+- `Quantity` class reused for volume:
+  - Immutable, private final fields for value and unit
+  - Validation: non-null unit and finite numeric value
+  - Equality: converts both operands to base unit before comparison
+  - Conversion: `convertTo(targetUnit)` delegates to `VolumeUnit`
+  - Addition:
+    - `add(Quantity, Quantity)` → result in first operand’s unit
+    - `add(Quantity, Quantity, VolumeUnit)` → result in explicit target unit
+- Category type safety enforced:
+  - Volume, length, and weight remain distinct and non-comparable categories
+- Backward-compatible architecture:
+  - UC1–UC10 functionality remains unaffected
+  - Volume integrated seamlessly using existing generic design pattern  
+
+[Source Code](https://github.com/aniruddhayadu/QuantityMeasurementApp/tree/feature/UC11-VolumeMeasurement/src)
+
+---
+
+
+📅 25 Feb 2026  
+
+**🔹 UC12 – Subtraction and Division Operations for Quantities  **
+Branch: feature/UC12-SubtractionAndDivision
+
+🎯 Objective
+
+- Extend arithmetic support beyond addition  
+- Implement subtraction between two quantities of the same category  
+- Implement division operation for quantities  
+- Maintain immutability and cross-unit precision  
+- Ensure strict category validation during arithmetic operations  
+
+✅ Implementation
+
+- Extended `Quantity` class with subtraction and division support
+- Subtraction:
+  - `subtract(Quantity, Quantity)` → result in first operand’s unit
+  - Converts both operands to base unit before performing subtraction
+  - Returns new immutable `Quantity` object
+- Division:
+  - `divide(double divisor)` → divides quantity value by scalar
+  - Validates divisor is non-zero and finite
+  - Preserves unit of original quantity
+- Validation:
+  - Ensures both quantities belong to same measurement category
+  - Prevents cross-category arithmetic operations
+  - Handles zero, negative, large, and small values
+- Backward-compatible architecture:
+  - UC1–UC11 functionality remains unaffected
+  - Arithmetic operations centralized within generic `Quantity` class  
+
+[Source Code](https://github.com/aniruddhayadu/QuantityMeasurementApp/tree/feature/UC12-SubtractionAndDivision/src)
+
+---
+
+📅 26 Feb 2026  
+
+**🔹 UC13 – Arithmetic Validation and Robust Category Safety  **
+Branch: feature/UC13-ArithmeticValidation
+
+🎯 Objective
+
+- Strengthen arithmetic validation across all measurement categories  
+- Prevent invalid arithmetic between incompatible measurement types  
+- Improve exception handling and input validation  
+- Maintain immutability and precision across operations  
+- Ensure all UC1–UC12 test cases continue to pass  
+
+✅ Implementation
+
+- Enhanced `Quantity` class with strict validation logic:
+  - Ensures arithmetic operations only occur within same measurement category
+  - Throws meaningful exceptions for invalid cross-category operations
+- Improved internal validation methods:
+  - Non-null checks for operands
+  - Finite numeric validation
+  - Category consistency verification
+- Refactored arithmetic logic for clarity and maintainability
+- Standardized exception handling for:
+  - Cross-category addition
+  - Cross-category subtraction
+  - Invalid division inputs
+- Preserved backward compatibility:
+  - All previous UC1–UC12 features work without modification
+  - No breaking API changes introduced  
+
+[Source Code](https://github.com/aniruddhayadu/QuantityMeasurementApp/tree/feature/UC13-CentralizedArithmeticLogic/src)
+
+---
+
+📅 27 Feb 2026  
+
+**🔹 UC14 – Temperature Measurement with Arithmetic Restriction (Celsius, Fahrenheit, Kelvin)  **
+Branch: feature/UC14-temperature-measurement
+
+🎯 Objective
+
+- Introduce **temperature measurement category** alongside length, weight, and volume  
+- Support units: CELSIUS (°C, base), FAHRENHEIT (°F), KELVIN (K)  
+- Implement equality comparison with proper temperature conversion formulas  
+- Restrict arithmetic operations (addition, subtraction, division) for temperature  
+- Maintain immutability, type safety, and backward compatibility  
+
+✅ Implementation
+
+- `TemperatureUnit` enum as standalone class:
+  - Constants: CELSIUS, FAHRENHEIT, KELVIN
+  - Custom conversion logic (not simple multiplication factor)
+  - Methods: `convertToBaseUnit()`, `convertFromBaseUnit()`
+- Extended generic `Quantity` architecture to support temperature
+- Equality:
+  - Converts both operands to base unit (Celsius) before comparison
+  - Supports cross-unit equality (°C ↔ °F ↔ K)
+- Arithmetic Restriction:
+  - Introduced validation to block add, subtract, and divide operations for temperature
+  - Throws `UnsupportedOperationException` for invalid arithmetic attempts
+- Category safety maintained:
+  - Temperature cannot be compared or operated with length, weight, or volume
+- Backward-compatible architecture:
+  - All UC1–UC13 functionality remains unaffected
+  - All existing 108 test cases continue to pass successfully  
+
+[Source Code](https://github.com/aniruddhayadu/QuantityMeasurementApp/tree/feature/UC14-temperature-measurement/src)
+
+---
+
+
