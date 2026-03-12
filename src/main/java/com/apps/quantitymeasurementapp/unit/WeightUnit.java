@@ -1,4 +1,4 @@
-package com.apps.quantitymeasurementapp;
+package com.apps.quantitymeasurementapp.unit;
 
 public enum WeightUnit implements IMeasurable{
 	KILOGRAM(1.0),
@@ -15,22 +15,27 @@ public enum WeightUnit implements IMeasurable{
 	
 	@Override
 	public double convertToBaseUnit(double value) {
-		return ((value*this.getConversionFactor())*100.0)/100.0;
+		return value*this.getConversionFactor();
 	}
 
+	@Override
+	public double convertFromBaseUnit(double baseValue) {
+		double result = baseValue / this.getConversionFactor();
+	    // Rounding to 2 decimal places:
+	    return Math.round(result * 100.0) / 100.0;
+	}
+	
 	@Override
 	public double getConversionFactor() {
 		return conversion;
 	}
-
-
-	@Override
-	public double convertFromBaseUnit(double baseValue) {
-		return baseValue/this.getConversionFactor();
-	}
-
 	@Override
 	public String getUnitName() {
 		return WeightUnit.this.toString();
+	}
+	
+	@Override
+	public String getMeasurableType() {
+		return this.getClass().getSimpleName();
 	}
 }
