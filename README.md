@@ -473,4 +473,109 @@ Branch: feature/UC14-temperature-measurement
 
 ---
 
+## 📅 12 March 2026
 
+## 🔹 UC15 – N-Tier Architecture Refactoring  
+**Branch:** `feature/UC15-NTierArchitectureRefactor`
+
+### 🎯 Objective
+Refactor the monolithic application into a **professional N-Tier architecture** to improve maintainability, scalability, and separation of concerns.
+
+Key goals:
+- Ensure a **clean and strict separation of concerns** across architectural layers
+- **Decouple data storage logic from business logic**
+- Apply **SOLID principles**, especially:
+  - Dependency Injection
+  - Open/Closed Principle
+- Maintain **backward compatibility** with all existing test cases
+
+---
+
+### 🏗️ Implementation
+
+#### 1. Service Layer
+Created `QuantityMeasurementServiceImpl`:
+- Centralized **mathematical operations, unit conversions, and comparisons**
+- Ensured the **Service layer is independent of storage implementations**
+
+#### 2. Controller Layer
+Introduced `QuantityMeasurementController`:
+- Handles incoming requests
+- Routes them securely to the **Service layer**
+
+#### 3. Repository Layer
+Defined the interface `IQuantityMeasurementRepository`:
+- Standardizes **data access operations**
+- Allows **high-level modules to remain independent of low-level implementations**
+
+#### 4. Cache Repository Implementation
+Implemented `QuantityMeasurementCacheRepository`:
+- Provides **local file-based persistence**
+- Uses **Java Serialization** for storing and retrieving measurement data
+
+#### 5. Testing
+Updated the **JUnit test suite**:
+- Validates the **new architectural flow**
+- Ensures **proper dependency injection across layers**
+- Confirms **existing functionality remains fully intact**
+
+---
+
+### 🔗 Source Code
+
+[QuantityMeasurementApp – UC15 N-Tier Architecture Refactor](https://github.com/aniruddhayadu/QuantityMeasurementApp/tree/feature/UC15-NTierArchitectureRefactor)
+
+---
+
+
+## 📅 14 March 2026
+
+## 🔹 UC16 – JDBC Database Integration  
+**Branch:** `feature/UC16-JDBCPersistence`
+
+### 🎯 Objective
+Enable persistent storage of measurement data using a **relational SQL database** while maintaining clean architecture and high performance.
+
+Key goals:
+- Enable **persistent storage of measurement data**
+- Implement **industry-standard connection pooling** for optimized performance
+- Secure database operations against vulnerabilities such as **SQL Injection**
+- Seamlessly replace **local cache storage with database storage** using **Dependency Injection**
+- Ensure **complete mocked test coverage** for the persistence layer
+
+---
+
+### 🏗️ Implementation
+
+#### 1. JDBC Persistence Layer
+- Integrated a **JDBC-based persistence layer**
+- Configured an **embedded H2 SQL Database** for seamless data storage and retrieval
+
+#### 2. Connection Pooling
+Implemented `ConnectionPool` utility:
+- Utilized **HikariCP** for **high-performance database connection management**
+- Ensured efficient and reliable connection reuse
+
+#### 3. Database Repository
+Created `QuantityMeasurementDatabaseRepository`:
+- Used **Parameterized Prepared Statements** to prevent **SQL Injection**
+- Implemented SQL logic for **saving and retrieving historical measurement data**
+
+#### 4. Dependency Injection
+Refactored `QuantityMeasurementApp`:
+- Enabled **dynamic injection of the database repository**
+- Ensured **business logic remained unchanged**
+
+#### 5. Testing
+Achieved **100% test coverage**:
+- Used **JUnit** and **Mockito**
+- Mocked repository interactions
+- Validated **Controller and Service layer behavior independently**
+
+---
+
+### 🔗 Source Code
+
+[QuantityMeasurementApp – UC16 JDBC Persistence](https://github.com/aniruddhayadu/QuantityMeasurementApp/tree/feature/UC16-JDBCPersistence/src)
+
+---
