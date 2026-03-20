@@ -28,16 +28,19 @@ main
       ├── feature/UC2-InchEquality
       ├── feature/UC3-GenericLength
       ├── feature/UC4-YardEquality
-      ├── feature/UC5-UnitConversion
+      ├── feature/UC5-UnitConversoion
       ├── feature/UC6-UnitAddition
       ├── feature/UC7-TargetUnitAddition
       ├── feature/UC8-StandaloneUnit
       ├── feature/UC9-WeightMeasurement
-      ├── feature/UC10-GenericQuantityAbstraction
+      ├── feature/UC10-GenericQuantity
       ├── feature/UC11-VolumeMeasurement
       ├── feature/UC12-SubtractionAndDivision
-      ├── feature/UC13-ArithmeticValidation
-      └── feature/UC14-temperature-measurement
+      ├── feature/UC13-CentralizedArithmeticLogic
+      ├── feature/UC14-temperature-measurement
+      ├── feature/UC15-NTierArchitectureRefactor
+      ├── feature/UC16-JDBCPersistence
+      └── feature/UC17-SpringBackend
 ```
 
 ---
