@@ -3,7 +3,7 @@ package com.app.quantitymeasurement.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.app.quantitymeasurement.model.QuantityMeasurementEntity;
+import com.app.quantitymeasurement.dto.QuantityMeasurementEntity;
 import com.app.quantitymeasurement.repository.QuantityMeasurementRepository;
 
 @Service
@@ -23,10 +23,10 @@ public class QuantityMeasurementService {
 
 		QuantityMeasurementEntity entity = new QuantityMeasurementEntity();
 
-		entity.setThisValue(value); 
-		entity.setThisUnit(unit); 
-		entity.setThisMeasurementType(unitType); 
-		entity.setResultValue(convertedValue); 
+		entity.setThisValue(value);
+		entity.setThisUnit(unit);
+		entity.setThisMeasurementType(unitType);
+		entity.setResultValue(convertedValue);
 
 		// Default values for other mandatory fields to avoid null constraints
 		entity.setOperation("CONVERT");

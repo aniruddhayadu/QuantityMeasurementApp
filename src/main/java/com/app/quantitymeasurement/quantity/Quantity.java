@@ -11,7 +11,7 @@ public class Quantity<U extends IMeasurable> {
     private double value;
     public U unit;
     
-    public Quantity(double value, U unit) {
+	public Quantity(double value, U unit) {
         if(Double.isNaN(value)) {
             throw new IllegalArgumentException("NaN value provided!");
         }

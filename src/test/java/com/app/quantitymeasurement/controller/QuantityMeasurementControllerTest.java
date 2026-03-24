@@ -2,6 +2,7 @@ package com.app.quantitymeasurement.controller;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 
 import org.junit.jupiter.api.Test;
@@ -16,24 +17,20 @@ import org.springframework.test.web.servlet.MockMvc;
 @AutoConfigureMockMvc
 public class QuantityMeasurementControllerTest {
 
-    @Autowired
-    private MockMvc mockMvc;
+	@Autowired
+	private MockMvc mockMvc;
 
-    @Test
-    @WithMockUser // for security bypass dummy aadmi 
-    public void testMeasurementConversionAndSaving() throws Exception {
+	@Test
+	@WithMockUser(username = "ani@test.com")
+	public void testMeasurementComparisonSuccess() throws Exception {
+		String jsonRequest = """
+				{
+				    "thisQuantityDTO": { "value": 1.0, "unit": "FEET", "measurementType": "LengthUnit" },
+				    "thatQuantityDTO": { "value": 12.0, "unit": "INCHES", "measurementType": "LengthUnit" }
+				}
+				""";
 
-        String jsonRequest = """
-            {
-                "thisQuantityDTO": { "value": 1.0, "unit": "FEET", "measurementType": "LengthUnit" },
-                "thatQuantityDTO": { "value": 12.0, "unit": "INCHES", "measurementType": "LengthUnit" }
-            }
-            """;
-        
-        mockMvc.perform(post("/api/v1/quantities/compare")
-                .with(csrf()) // csrf token for post request 
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(jsonRequest))
-                .andExpect(status().isOk()); //comparison  
-    }
+		mockMvc.perform(post("/api/v1/quantities/compare").with(csrf()).contentType(MediaType.APPLICATION_JSON)
+				.content(jsonRequest)).andExpect(status().isOk()).andExpect(jsonPath("$.resultString").value("Equal"));
+	}
 }
