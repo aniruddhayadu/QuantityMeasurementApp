@@ -4,8 +4,8 @@
 
 **The Quantity Measurement Application validates equality, unit conversions, and arithmetic operations across multiple measurement categories:**
 
- - Length: Feet, Inches, Yards, Centimeters
- - Weight: Kilogram, Gram, Pound
+- Length: Feet, Inches, Yards, Centimeters
+- Weight: Kilogram, Gram, Pound
 
 **The project follows best practices:**
 
@@ -21,6 +21,7 @@
 ## Git Workflow
 
 ---
+
 ```
 main
  └── dev
@@ -48,7 +49,7 @@ main
 
 ## Feature History
 
-📅 17 Feb 2026  
+📅 17 Feb 2026
 
 **🔹 UC1 – Feet Equality Verification**  
 Branch: feature/UC1-FeetEquality
@@ -70,9 +71,9 @@ Branch: feature/UC1-FeetEquality
 
 ---
 
-📅 18 Feb 2026  
+📅 18 Feb 2026
 
-**🔹 UC2 – Feet and Inches Equality Verification  **
+**🔹 UC2 – Feet and Inches Equality Verification **
 Branch: feature/UC2-InchEquality
 
 🎯 Objective
@@ -90,14 +91,13 @@ Branch: feature/UC2-InchEquality
 - Reduced main method dependency by creating dedicated methods for Feet and Inches equality
 - Created JUnit 5 test cases covering same and different values, nulls, and self-reference
 
-
 [Source Code](https://github.com/aniruddhayadu/QuantityMeasurementApp/tree/feature/UC2-InchEquality/src)
 
 ---
 
-📅 19 Feb 2026  
+📅 19 Feb 2026
 
-**🔹 UC3 – Generic Quantity Class for DRY Principle  **
+**🔹 UC3 – Generic Quantity Class for DRY Principle **
 Branch: feature/UC3-GenericLength
 
 🎯 Objective
@@ -122,7 +122,7 @@ Branch: feature/UC3-GenericLength
 
 📅 20 Feb 2026
 
-**🔹 UC4 – Extended Unit Support (Yards & Centimeters)  **
+**🔹 UC4 – Extended Unit Support (Yards & Centimeters) **
 Branch: feature/UC4-YardEquality
 
 🎯 Objective
@@ -144,9 +144,9 @@ Branch: feature/UC4-YardEquality
 
 ---
 
-📅 20 Feb 2026  
+📅 20 Feb 2026
 
-**🔹 UC5 – Unit-to-Unit Conversion (Same Measurement Type)  **
+**🔹 UC5 – Unit-to-Unit Conversion (Same Measurement Type) **
 Branch: feature/UC5-UnitConversion
 
 🎯 Objective
@@ -170,9 +170,9 @@ Branch: feature/UC5-UnitConversion
 
 ---
 
-📅 21 Feb 2026  
+📅 21 Feb 2026
 
-**🔹 UC6 – Addition of Two Length Units (Same Category)  **
+**🔹 UC6 – Addition of Two Length Units (Same Category) **
 Branch: feature/UC6-UnitAddition
 
 🎯 Objective
@@ -197,9 +197,9 @@ Branch: feature/UC6-UnitAddition
 
 ---
 
-📅 21 Feb 2026  
+📅 21 Feb 2026
 
-**🔹 UC7 – Addition with Target Unit Specification** 
+**🔹 UC7 – Addition with Target Unit Specification**
 
 Branch: feature/UC7-TargetUnitAddition
 
@@ -226,9 +226,9 @@ Branch: feature/UC7-TargetUnitAddition
 
 ---
 
-📅 22 Feb 2026  
+📅 22 Feb 2026
 
-**🔹 UC8 – Refactoring Unit Enum to Standalone with Conversion Responsibility  **
+**🔹 UC8 – Refactoring Unit Enum to Standalone with Conversion Responsibility **
 Branch: feature/UC8-StandaloneUnit
 
 🎯 Objective
@@ -254,10 +254,9 @@ Branch: feature/UC8-StandaloneUnit
 
 ---
 
+📅 22 Feb 2026
 
-📅 22 Feb 2026  
-
-**🔹 UC9 – Weight Measurement Equality, Conversion, and Addition (Kilogram, Gram, Pound)  **
+**🔹 UC9 – Weight Measurement Equality, Conversion, and Addition (Kilogram, Gram, Pound) **
 Branch: feature/UC9-WeightMeasurement
 
 🎯 Objective
@@ -292,20 +291,19 @@ Branch: feature/UC9-WeightMeasurement
 
 ---
 
+📅 23 Feb 2026
 
-📅 23 Feb 2026  
-
-**🔹 UC10 – Generic Quantity Abstraction for Multi-Category Support  **
+**🔹 UC10 – Generic Quantity Abstraction for Multi-Category Support **
 Branch: feature/UC10-GenericQuantityAbstraction
 
 🎯 Objective
 
-- Eliminate duplication between QuantityLength and QuantityWeight  
-- Introduce a common abstraction for all measurement categories  
-- Apply DRY principle across the entire application  
-- Improve scalability for future categories (Volume, Temperature)  
-- Maintain immutability and type safety  
-- Ensure full backward compatibility with UC1–UC9  
+- Eliminate duplication between QuantityLength and QuantityWeight
+- Introduce a common abstraction for all measurement categories
+- Apply DRY principle across the entire application
+- Improve scalability for future categories (Volume, Temperature)
+- Maintain immutability and type safety
+- Ensure full backward compatibility with UC1–UC9
 
 ✅ Implementation
 
@@ -326,24 +324,24 @@ Branch: feature/UC10-GenericQuantityAbstraction
 - Category type safety preserved
 - Backward-compatible architecture:
   - UC1–UC9 functionality remains unaffected
-  - Established scalable foundation for Volume and Temperature categories  
+  - Established scalable foundation for Volume and Temperature categories
 
 [Source Code](https://github.com/aniruddhayadu/QuantityMeasurementApp/tree/feature/UC10-GenericQuantity/src)
 
 ---
 
-📅 24 Feb 2026  
+📅 24 Feb 2026
 
-**🔹 UC11 – Volume Measurement Equality, Conversion, and Addition (Litre, Millilitre, Gallon)  **
+**🔹 UC11 – Volume Measurement Equality, Conversion, and Addition (Litre, Millilitre, Gallon) **
 Branch: feature/UC11-VolumeMeasurement
 
 🎯 Objective
 
-- Introduce **volume measurement category** alongside length and weight  
-- Support units: LITRE (L, base), MILLILITRE (mL), GALLON (gal)  
-- Implement equality comparison, unit conversion, and addition for volume  
-- Maintain immutability and type safety  
-- Demonstrate scalability of generic Quantity architecture for new measurement categories  
+- Introduce **volume measurement category** alongside length and weight
+- Support units: LITRE (L, base), MILLILITRE (mL), GALLON (gal)
+- Implement equality comparison, unit conversion, and addition for volume
+- Maintain immutability and type safety
+- Demonstrate scalability of generic Quantity architecture for new measurement categories
 
 ✅ Implementation
 
@@ -363,25 +361,24 @@ Branch: feature/UC11-VolumeMeasurement
   - Volume, length, and weight remain distinct and non-comparable categories
 - Backward-compatible architecture:
   - UC1–UC10 functionality remains unaffected
-  - Volume integrated seamlessly using existing generic design pattern  
+  - Volume integrated seamlessly using existing generic design pattern
 
 [Source Code](https://github.com/aniruddhayadu/QuantityMeasurementApp/tree/feature/UC11-VolumeMeasurement/src)
 
 ---
 
+📅 25 Feb 2026
 
-📅 25 Feb 2026  
-
-**🔹 UC12 – Subtraction and Division Operations for Quantities  **
+**🔹 UC12 – Subtraction and Division Operations for Quantities **
 Branch: feature/UC12-SubtractionAndDivision
 
 🎯 Objective
 
-- Extend arithmetic support beyond addition  
-- Implement subtraction between two quantities of the same category  
-- Implement division operation for quantities  
-- Maintain immutability and cross-unit precision  
-- Ensure strict category validation during arithmetic operations  
+- Extend arithmetic support beyond addition
+- Implement subtraction between two quantities of the same category
+- Implement division operation for quantities
+- Maintain immutability and cross-unit precision
+- Ensure strict category validation during arithmetic operations
 
 ✅ Implementation
 
@@ -400,24 +397,24 @@ Branch: feature/UC12-SubtractionAndDivision
   - Handles zero, negative, large, and small values
 - Backward-compatible architecture:
   - UC1–UC11 functionality remains unaffected
-  - Arithmetic operations centralized within generic `Quantity` class  
+  - Arithmetic operations centralized within generic `Quantity` class
 
 [Source Code](https://github.com/aniruddhayadu/QuantityMeasurementApp/tree/feature/UC12-SubtractionAndDivision/src)
 
 ---
 
-📅 26 Feb 2026  
+📅 26 Feb 2026
 
-**🔹 UC13 – Arithmetic Validation and Robust Category Safety  **
+**🔹 UC13 – Arithmetic Validation and Robust Category Safety **
 Branch: feature/UC13-ArithmeticValidation
 
 🎯 Objective
 
-- Strengthen arithmetic validation across all measurement categories  
-- Prevent invalid arithmetic between incompatible measurement types  
-- Improve exception handling and input validation  
-- Maintain immutability and precision across operations  
-- Ensure all UC1–UC12 test cases continue to pass  
+- Strengthen arithmetic validation across all measurement categories
+- Prevent invalid arithmetic between incompatible measurement types
+- Improve exception handling and input validation
+- Maintain immutability and precision across operations
+- Ensure all UC1–UC12 test cases continue to pass
 
 ✅ Implementation
 
@@ -435,24 +432,24 @@ Branch: feature/UC13-ArithmeticValidation
   - Invalid division inputs
 - Preserved backward compatibility:
   - All previous UC1–UC12 features work without modification
-  - No breaking API changes introduced  
+  - No breaking API changes introduced
 
 [Source Code](https://github.com/aniruddhayadu/QuantityMeasurementApp/tree/feature/UC13-CentralizedArithmeticLogic/src)
 
 ---
 
-📅 27 Feb 2026  
+📅 27 Feb 2026
 
-**🔹 UC14 – Temperature Measurement with Arithmetic Restriction (Celsius, Fahrenheit, Kelvin)  **
+**🔹 UC14 – Temperature Measurement with Arithmetic Restriction (Celsius, Fahrenheit, Kelvin) **
 Branch: feature/UC14-temperature-measurement
 
 🎯 Objective
 
-- Introduce **temperature measurement category** alongside length, weight, and volume  
-- Support units: CELSIUS (°C, base), FAHRENHEIT (°F), KELVIN (K)  
-- Implement equality comparison with proper temperature conversion formulas  
-- Restrict arithmetic operations (addition, subtraction, division) for temperature  
-- Maintain immutability, type safety, and backward compatibility  
+- Introduce **temperature measurement category** alongside length, weight, and volume
+- Support units: CELSIUS (°C, base), FAHRENHEIT (°F), KELVIN (K)
+- Implement equality comparison with proper temperature conversion formulas
+- Restrict arithmetic operations (addition, subtraction, division) for temperature
+- Maintain immutability, type safety, and backward compatibility
 
 ✅ Implementation
 
@@ -471,7 +468,7 @@ Branch: feature/UC14-temperature-measurement
   - Temperature cannot be compared or operated with length, weight, or volume
 - Backward-compatible architecture:
   - All UC1–UC13 functionality remains unaffected
-  - All existing 108 test cases continue to pass successfully  
+  - All existing 108 test cases continue to pass successfully
 
 [Source Code](https://github.com/aniruddhayadu/QuantityMeasurementApp/tree/feature/UC14-temperature-measurement/src)
 
@@ -479,13 +476,16 @@ Branch: feature/UC14-temperature-measurement
 
 ## 📅 12 March 2026
 
-## 🔹 UC15 – N-Tier Architecture Refactoring  
+## 🔹 UC15 – N-Tier Architecture Refactoring
+
 **Branch:** `feature/UC15-NTierArchitectureRefactor`
 
 ### 🎯 Objective
+
 Refactor the monolithic application into a **professional N-Tier architecture** to improve maintainability, scalability, and separation of concerns.
 
 Key goals:
+
 - Ensure a **clean and strict separation of concerns** across architectural layers
 - **Decouple data storage logic from business logic**
 - Apply **SOLID principles**, especially:
@@ -498,27 +498,37 @@ Key goals:
 ### 🏗️ Implementation
 
 #### 1. Service Layer
+
 Created `QuantityMeasurementServiceImpl`:
+
 - Centralized **mathematical operations, unit conversions, and comparisons**
 - Ensured the **Service layer is independent of storage implementations**
 
 #### 2. Controller Layer
+
 Introduced `QuantityMeasurementController`:
+
 - Handles incoming requests
 - Routes them securely to the **Service layer**
 
 #### 3. Repository Layer
+
 Defined the interface `IQuantityMeasurementRepository`:
+
 - Standardizes **data access operations**
 - Allows **high-level modules to remain independent of low-level implementations**
 
 #### 4. Cache Repository Implementation
+
 Implemented `QuantityMeasurementCacheRepository`:
+
 - Provides **local file-based persistence**
 - Uses **Java Serialization** for storing and retrieving measurement data
 
 #### 5. Testing
+
 Updated the **JUnit test suite**:
+
 - Validates the **new architectural flow**
 - Ensures **proper dependency injection across layers**
 - Confirms **existing functionality remains fully intact**
@@ -531,16 +541,18 @@ Updated the **JUnit test suite**:
 
 ---
 
-
 ## 📅 14 March 2026
 
-## 🔹 UC16 – JDBC Database Integration  
+## 🔹 UC16 – JDBC Database Integration
+
 **Branch:** `feature/UC16-JDBCPersistence`
 
 ### 🎯 Objective
+
 Enable persistent storage of measurement data using a **relational SQL database** while maintaining clean architecture and high performance.
 
 Key goals:
+
 - Enable **persistent storage of measurement data**
 - Implement **industry-standard connection pooling** for optimized performance
 - Secure database operations against vulnerabilities such as **SQL Injection**
@@ -552,26 +564,35 @@ Key goals:
 ### 🏗️ Implementation
 
 #### 1. JDBC Persistence Layer
+
 - Integrated a **JDBC-based persistence layer**
 - Configured an **embedded H2 SQL Database** for seamless data storage and retrieval
 
 #### 2. Connection Pooling
+
 Implemented `ConnectionPool` utility:
+
 - Utilized **HikariCP** for **high-performance database connection management**
 - Ensured efficient and reliable connection reuse
 
 #### 3. Database Repository
+
 Created `QuantityMeasurementDatabaseRepository`:
+
 - Used **Parameterized Prepared Statements** to prevent **SQL Injection**
 - Implemented SQL logic for **saving and retrieving historical measurement data**
 
 #### 4. Dependency Injection
+
 Refactored `QuantityMeasurementApp`:
+
 - Enabled **dynamic injection of the database repository**
 - Ensured **business logic remained unchanged**
 
 #### 5. Testing
+
 Achieved **100% test coverage**:
+
 - Used **JUnit** and **Mockito**
 - Mocked repository interactions
 - Validated **Controller and Service layer behavior independently**
@@ -583,7 +604,6 @@ Achieved **100% test coverage**:
 [QuantityMeasurementApp – UC16 JDBC Persistence](https://github.com/aniruddhayadu/QuantityMeasurementApp/tree/feature/UC16-JDBCPersistence/src)
 
 ---
-
 
 # 📊 UC17 – Audit History & Persistence with Lombok
 
@@ -598,9 +618,9 @@ This use case focuses on implementing a **persistent Audit History system** usin
 
 ### Key Goals
 
-- Transition from temporary cache to **H2 Database** for persistent storage  
-- Reduce boilerplate code using **Lombok annotations**  
-- Maintain a complete **audit trail** of all operations  
+- Transition from temporary cache to **H2 Database** for persistent storage
+- Reduce boilerplate code using **Lombok annotations**
+- Maintain a complete **audit trail** of all operations
 - Provide APIs for querying **history and analytics data**
 
 ---
@@ -622,16 +642,19 @@ This use case focuses on implementing a **persistent Audit History system** usin
 ### 2. Entity & DTO Optimization (Lombok)
 
 Refactored:
+
 - `QuantityMeasurementEntity`
 - `QuantityDTO`
 
 #### Applied Lombok Annotations:
+
 - `@Data`
 - `@AllArgsConstructor`
 
 #### Benefits:
-- Eliminated manual getters, setters, and constructors  
-- Improved code readability and maintainability  
+
+- Eliminated manual getters, setters, and constructors
+- Improved code readability and maintainability
 
 ---
 
@@ -640,15 +663,17 @@ Refactored:
 Updated `QuantityMeasurementServiceImpl`:
 
 #### Integrated persistence into core operations:
-- Add  
-- Subtract  
-- Convert  
-- Compare  
+
+- Add
+- Subtract
+- Convert
+- Compare
 
 #### Audit Behavior:
+
 - Each successful operation:
   - Automatically generates an **audit record**
-  - Stores complete transaction details in the database  
+  - Stores complete transaction details in the database
 
 ---
 
@@ -656,10 +681,10 @@ Updated `QuantityMeasurementServiceImpl`:
 
 Enhanced `QuantityMeasurementController` with new endpoints:
 
-- Fetch complete operation history  
-- Filter history by operation type  
-- Query by measurement category (e.g., Length, Volume)  
-- Retrieve operation counts  
+- Fetch complete operation history
+- Filter history by operation type
+- Query by measurement category (e.g., Length, Volume)
+- Retrieve operation counts
 
 ---
 
@@ -667,10 +692,10 @@ Enhanced `QuantityMeasurementController` with new endpoints:
 
 Updated test suite using **JUnit 5** and **Mockito**:
 
-- Verified repository-level data persistence  
-- Validated service-layer audit logging  
-- Added integration tests using **MockMvc**  
-- Ensured accurate history retrieval via REST APIs  
+- Verified repository-level data persistence
+- Validated service-layer audit logging
+- Added integration tests using **MockMvc**
+- Ensured accurate history retrieval via REST APIs
 
 ---
 
@@ -696,9 +721,9 @@ Updated test suite using **JUnit 5** and **Mockito**:
 
 This implementation introduces a **robust, persistent audit system** while improving code quality through **Lombok**. It ensures:
 
-- Reliable historical tracking  
-- Clean and maintainable codebase  
-- Scalable API design for analytics and querying  
+- Reliable historical tracking
+- Clean and maintainable codebase
+- Scalable API design for analytics and querying
 
 ---
 
@@ -720,10 +745,10 @@ This use case focuses on securing the **Quantity Measurement Application** by im
 
 ## 🚀 Key Goals
 
-- Integrate Google Sign-In for seamless user authentication  
-- Implement JWT-based stateless authorization for API security  
-- Secure all measurement and history endpoints from unauthorized access  
-- Manage user identities and roles using a persistent database layer  
+- Integrate Google Sign-In for seamless user authentication
+- Implement JWT-based stateless authorization for API security
+- Secure all measurement and history endpoints from unauthorized access
+- Manage user identities and roles using a persistent database layer
 
 ---
 
@@ -733,10 +758,10 @@ This use case focuses on securing the **Quantity Measurement Application** by im
 
 Created `SecurityConfig` to manage the security filter chain:
 
-- Enabled OAuth2 Login with Google as the provider  
-- Configured Stateless Session Management (no `JSESSIONID`)  
-- Set up public vs. protected route access (`/auth/**` is public)  
-- Disabled CSRF for REST API compatibility  
+- Enabled OAuth2 Login with Google as the provider
+- Configured Stateless Session Management (no `JSESSIONID`)
+- Set up public vs. protected route access (`/auth/**` is public)
+- Disabled CSRF for REST API compatibility
 
 ---
 
@@ -744,14 +769,14 @@ Created `SecurityConfig` to manage the security filter chain:
 
 Developed a custom `JwtService` for:
 
-- **Token Generation** → Creating signed tokens upon successful login  
-- **Token Validation** → Checking signature, expiration, and user claims  
-- **Extraction** → Retrieving user details from the `Authorization: Bearer` header  
+- **Token Generation** → Creating signed tokens upon successful login
+- **Token Validation** → Checking signature, expiration, and user claims
+- **Extraction** → Retrieving user details from the `Authorization: Bearer` header
 
 Implemented `JwtAuthenticationFilter`:
 
-- Intercepts every request  
-- Validates JWT before it reaches the controller  
+- Intercepts every request
+- Validates JWT before it reaches the controller
 
 ---
 
@@ -759,28 +784,29 @@ Implemented `JwtAuthenticationFilter`:
 
 Enhanced `CustomUserDetailsService`:
 
-- Integrates with `UserRepository` to fetch user details  
-- Maps Google-authenticated users to local database records  
+- Integrates with `UserRepository` to fetch user details
+- Maps Google-authenticated users to local database records
 
 #### 🔐 Password Protection
 
-- Used `BCryptPasswordEncoder` for secure credential storage  
+- Used `BCryptPasswordEncoder` for secure credential storage
 
 ---
 
 ### 4. 🔄 Authentication Flow
 
 1. **User Login**  
-   User authenticates via Google OAuth2 or custom Login API  
+   User authenticates via Google OAuth2 or custom Login API
 
 2. **Validation**  
-   Backend validates credentials / OAuth callback  
+   Backend validates credentials / OAuth callback
 
 3. **JWT Issuance**  
-   A unique token is generated and sent to the client  
+   A unique token is generated and sent to the client
 
 4. **Authorized Request**  
    Client sends JWT in header:
+
    ```
    Authorization: Bearer <JWT>
    ```
@@ -798,28 +824,31 @@ Enhanced `CustomUserDetailsService`:
 Updated test suite using **JUnit 5** and **MockMvc**:
 
 #### ✅ Security Tests
-- `401 Unauthorized` → Missing/invalid token  
-- `200 OK` → Valid token  
+
+- `401 Unauthorized` → Missing/invalid token
+- `200 OK` → Valid token
 
 #### ✅ Service Tests
-- Verified JWT generation and parsing logic  
+
+- Verified JWT generation and parsing logic
 
 #### 🔧 Additional Practices
-- Used `@WithMockUser` for controller testing  
-- Applied Mockito for mocking  
-- Used Lombok for clean DTOs  
+
+- Used `@WithMockUser` for controller testing
+- Applied Mockito for mocking
+- Used Lombok for clean DTOs
 
 ---
 
 ## 🗄️ Tech Stack
 
-- Spring Boot  
-- Spring Security  
-- Google OAuth2  
-- JWT (JSON Web Token)  
-- H2 Database  
-- Project Lombok  
-- JUnit 5 / Mockito  
+- Spring Boot
+- Spring Security
+- Google OAuth2
+- JWT (JSON Web Token)
+- H2 Database
+- Project Lombok
+- JUnit 5 / Mockito
 
 ---
 

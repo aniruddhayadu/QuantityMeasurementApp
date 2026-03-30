@@ -1,0 +1,11 @@
+/target/
+*.class
+.classpath
+.project
+.settings/
+.metadata/
+*.ser
+*.db
+.factorypath
+dump/
+FETCH_HEAD
