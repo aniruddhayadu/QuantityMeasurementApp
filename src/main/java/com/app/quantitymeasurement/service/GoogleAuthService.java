@@ -5,6 +5,7 @@ import com.app.quantitymeasurement.entity.User;
 import com.app.quantitymeasurement.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -17,30 +18,33 @@ public class GoogleAuthService {
 	private final JwtService jwtService;
 	private final UserRepository userRepository;
 
-	public AuthResponse handleGoogleAuth(String code) {
-		log.info("Processing Google OAuth code: {}", code);
+	public AuthResponse processGoogleUser(OAuth2User oAuth2User) {
+		// Extract real email and name from Google Profile attributes
+		String googleEmail = oAuth2User.getAttribute("email");
+		String name = oAuth2User.getAttribute("name");
 
-		// Simulation: Email extracted from Google Auth Code
-		String googleEmail = "google_user@gmail.com";
+		log.info("Processing Google Login for email: {}", googleEmail);
 
 		Optional<User> existingUser = userRepository.findByEmail(googleEmail);
 		User user;
 
 		if (existingUser.isPresent()) {
 			user = existingUser.get();
+			log.info("Existing Google user found: {}", googleEmail);
 		} else {
-			// Line 43 Fix: Traditional instantiation instead of .builder()
 			log.info("New Google user detected. Registering: {}", googleEmail);
+			// Manual instantiation as per your requirement
 			user = new User();
-			user.setUsername("GoogleUser_" + System.currentTimeMillis());
+			user.setUsername(name != null ? name : "GoogleUser_" + System.currentTimeMillis());
 			user.setEmail(googleEmail);
-			user.setPassword("OAUTH_PROTECTED");
+			user.setPassword("OAUTH_EXTERNAL_PROVIDER"); // Not used for OAuth users
 			user.setRole("ROLE_USER");
 			user = userRepository.save(user);
 		}
 
+		// Generate the JWT token using your internal service
 		String token = jwtService.generateToken(user.getEmail());
 
-		return new AuthResponse(token, "Google Authentication Successful");
+		return new AuthResponse(token, "Google Authentication Successful for " + googleEmail);
 	}
 }
