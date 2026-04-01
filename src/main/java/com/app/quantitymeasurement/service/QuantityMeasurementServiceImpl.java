@@ -11,12 +11,9 @@ import com.app.quantitymeasurement.unit.*;
 
 import org.springframework.stereotype.Service;
 import java.util.List;
-import java.util.logging.Logger;
 
 @Service
 public class QuantityMeasurementServiceImpl implements IQuantityMeasurementService {
-
-	private static final Logger logger = Logger.getLogger(QuantityMeasurementServiceImpl.class.getName());
 
 	private final QuantityMeasurementRepository repository;
 
@@ -39,11 +36,12 @@ public class QuantityMeasurementServiceImpl implements IQuantityMeasurementServi
 
 		boolean isEqual = q1.equals(q2);
 
-		// Final Persistence with clean resultUnit
-		QuantityMeasurementEntity entity = new QuantityMeasurementEntity(thisDTO.value, thisDTO.unit.toUpperCase(),
-				thisDTO.measurementType, thatDTO.value, thatDTO.unit.toUpperCase(), thatDTO.measurementType,
-				Operation.COMPARE.name(), 0.0, thisDTO.unit.toUpperCase(), thisDTO.measurementType,
-				isEqual ? "Equal" : "Not Equal", false, "null");
+		QuantityMeasurementEntity entity = new QuantityMeasurementEntity(thisDTO.getValue(),
+				thisDTO.getUnit().toUpperCase(), thisDTO.getMeasurementType(), thatDTO.getValue(),
+				thatDTO.getUnit().toUpperCase(), thatDTO.getMeasurementType(), Operation.COMPARE.name(), 0.0,
+				thisDTO.getUnit().toUpperCase(), thisDTO.getMeasurementType(), isEqual ? "Equal" : "Not Equal", false,
+				"null");
+
 		repository.save(entity);
 		return new QuantityMeasurementDTO().from(entity);
 	}
@@ -56,13 +54,23 @@ public class QuantityMeasurementServiceImpl implements IQuantityMeasurementServi
 		Quantity<IMeasurable> q1 = new Quantity<>(m1.getValue(), m1.getUnit());
 		double convertedValue = q1.convertTo(m2.getUnit());
 
-		QuantityMeasurementEntity entity = new QuantityMeasurementEntity(thisDTO.value, thisDTO.unit.toUpperCase(),
-				thisDTO.measurementType, thatDTO.value, thatDTO.unit.toUpperCase(), thatDTO.measurementType,
-				Operation.CONVERT.name(), convertedValue, thatDTO.unit.toUpperCase(), thisDTO.measurementType,
-				"Converted", false, "null");
+		QuantityMeasurementEntity entity = new QuantityMeasurementEntity(thisDTO.getValue(),
+				thisDTO.getUnit().toUpperCase(), thisDTO.getMeasurementType(), thatDTO.getValue(),
+				thatDTO.getUnit().toUpperCase(), thatDTO.getMeasurementType(), Operation.CONVERT.name(), convertedValue,
+				thatDTO.getUnit().toUpperCase(), thisDTO.getMeasurementType(), "Converted", false, "null");
 
 		repository.save(entity);
 		return new QuantityMeasurementDTO().from(entity);
+	}
+
+	@Override
+	public List<QuantityMeasurementDTO> getOperationHistory(String operation) {
+		return new QuantityMeasurementDTO().fromList(repository.findByOperation(operation.toUpperCase()));
+	}
+
+	@Override
+	public List<QuantityMeasurementDTO> getErrorHistory() {
+		return new QuantityMeasurementDTO().fromList(repository.findByIsErrorTrue());
 	}
 
 	@Override
@@ -91,11 +99,6 @@ public class QuantityMeasurementServiceImpl implements IQuantityMeasurementServi
 	}
 
 	@Override
-	public List<QuantityMeasurementDTO> getOperationHistory(String operation) {
-		return new QuantityMeasurementDTO().fromList(repository.findByOperation(operation.toUpperCase()));
-	}
-
-	@Override
 	public List<QuantityMeasurementDTO> getMeasurementsByType(String type) {
 		return new QuantityMeasurementDTO().fromList(repository.findByThisMeasurementType(type));
 	}
@@ -105,19 +108,12 @@ public class QuantityMeasurementServiceImpl implements IQuantityMeasurementServi
 		return repository.countByOperationAndIsErrorFalse(operation.toUpperCase());
 	}
 
-	@Override
-	public List<QuantityMeasurementDTO> getErrorHistory() {
-		return new QuantityMeasurementDTO().fromList(repository.findByIsErrorTrue());
-	}
-
-	// --- Helper Logic ---
-
+	// Helper logic
 	private QuantityModel<IMeasurable> mapToModel(QuantityDTO dto) {
 		if (dto == null)
 			throw new QuantityMeasurementException("Quantity data cannot be null");
-
-		String type = dto.measurementType;
-		String unitName = dto.unit;
+		String type = dto.getMeasurementType();
+		String unitName = dto.getUnit();
 		IMeasurable unit;
 		try {
 			switch (type) {
@@ -137,14 +133,14 @@ public class QuantityMeasurementServiceImpl implements IQuantityMeasurementServi
 				throw new QuantityMeasurementException("Invalid Category: " + type);
 			}
 		} catch (IllegalArgumentException e) {
-			throw new InvalidUnitException("Unit '" + unitName + "' is not valid for " + type);
+			throw new InvalidUnitException("Unit not valid: " + unitName);
 		}
-		return new QuantityModel<>(dto.value, unit);
+		return new QuantityModel<>(dto.getValue(), unit);
 	}
 
 	private void validateModels(QuantityModel<?> m1, QuantityModel<?> m2) {
 		if (m1.getUnit().getClass() != m2.getUnit().getClass()) {
-			throw new CategoryMismatchException("Incompatible types: " + m1.getUnit().getClass().getSimpleName());
+			throw new CategoryMismatchException("Incompatible types");
 		}
 	}
 
@@ -153,27 +149,25 @@ public class QuantityMeasurementServiceImpl implements IQuantityMeasurementServi
 		QuantityModel<IMeasurable> m1 = mapToModel(d1);
 		QuantityModel<IMeasurable> m2 = mapToModel(d2);
 		QuantityModel<IMeasurable> mT = (target != null) ? mapToModel(target) : null;
-
 		validateModels(m1, m2);
 
 		Quantity<IMeasurable> q1 = new Quantity<>(m1.getValue(), m1.getUnit());
 		Quantity<IMeasurable> q2 = new Quantity<>(m2.getValue(), m2.getUnit());
-
 		Quantity<IMeasurable> result;
+
 		if (opType == Operation.ADD) {
 			result = (mT != null) ? q1.add(q2, mT.getUnit()) : q1.add(q2);
 		} else if (opType == Operation.SUBTRACT) {
 			result = (mT != null) ? q1.subtract(q2, mT.getUnit()) : q1.subtract(q2);
 		} else {
-			double divResult = q1.divide(q2);
-			result = new Quantity<IMeasurable>(divResult, m1.getUnit());
+			double divRes = q1.divide(q2);
+			result = new Quantity<IMeasurable>(divRes, m1.getUnit());
 		}
 
-		// Final Persistence with all 13 fields (Formatting updated for resultUnit)
-		QuantityMeasurementEntity entity = new QuantityMeasurementEntity(d1.value, d1.unit.toUpperCase(),
-				d1.measurementType, d2.value, d2.unit.toUpperCase(), d2.measurementType, opType.name(),
-				result.getValue(), result.getUnit().getUnitName(), // Clean unit name like "INCHES"
-				d1.measurementType, "Success", false, "null");
+		QuantityMeasurementEntity entity = new QuantityMeasurementEntity(d1.getValue(), d1.getUnit().toUpperCase(),
+				d1.getMeasurementType(), d2.getValue(), d2.getUnit().toUpperCase(), d2.getMeasurementType(),
+				opType.name(), result.getValue(), result.getUnit().getUnitName(), d1.getMeasurementType(), "Success",
+				false, "null");
 
 		repository.save(entity);
 		return new QuantityMeasurementDTO().from(entity);
