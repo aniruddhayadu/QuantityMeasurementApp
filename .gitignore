@@ -5,3 +5,4 @@
 .settings/
 .metadata/
 /dump/
+.env
