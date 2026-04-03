@@ -19,7 +19,6 @@ import lombok.extern.slf4j.Slf4j;
 @Tag(name = "Quantity Measurements")
 public class QuantityMeasurementController {
 
-	// Final keyword ensures constructor injection via @RequiredArgsConstructor
 	private final IQuantityMeasurementService measurementService;
 
 	@GetMapping("/status")
@@ -30,19 +29,50 @@ public class QuantityMeasurementController {
 	@PostMapping("/compare")
 	@Operation(summary = "Compare two quantities")
 	public ResponseEntity<QuantityMeasurementDTO> compare(@Valid @RequestBody QuantityInputDTO input) {
-		return ResponseEntity.ok(measurementService.compare(input.getThisQuantityDTO(), input.getThatQuantityDTO()));
+		log.info("Comparing quantities: {} and {}", input.getThisQuantityDTO(), input.getThatQuantityDTO());
+
+		QuantityMeasurementDTO response = measurementService.compare(input.getThisQuantityDTO(),
+				input.getThatQuantityDTO());
+
+		fillInputDetails(response, input);
+
+		return ResponseEntity.ok(response);
 	}
 
 	@PostMapping("/convert")
 	@Operation(summary = "Convert unit")
 	public ResponseEntity<QuantityMeasurementDTO> convert(@Valid @RequestBody QuantityInputDTO input) {
-		return ResponseEntity.ok(measurementService.convert(input.getThisQuantityDTO(), input.getThatQuantityDTO()));
+		log.info("Converting unit: {}", input.getThisQuantityDTO());
+
+		QuantityMeasurementDTO response = measurementService.convert(input.getThisQuantityDTO(),
+				input.getThatQuantityDTO());
+
+		fillInputDetails(response, input);
+
+		return ResponseEntity.ok(response);
 	}
 
 	@PostMapping("/add")
 	@Operation(summary = "Add quantities")
 	public ResponseEntity<QuantityMeasurementDTO> add(@Valid @RequestBody QuantityInputDTO input) {
-		return ResponseEntity.ok(measurementService.add(input.getThisQuantityDTO(), input.getThatQuantityDTO()));
+		QuantityMeasurementDTO response = measurementService.add(input.getThisQuantityDTO(),
+				input.getThatQuantityDTO());
+		fillInputDetails(response, input);
+		return ResponseEntity.ok(response);
+	}
+
+	private void fillInputDetails(QuantityMeasurementDTO dto, QuantityInputDTO input) {
+		if (dto != null && input.getThisQuantityDTO() != null) {
+			dto.setThisValue(input.getThisQuantityDTO().getValue());
+			dto.setThisUnit(input.getThisQuantityDTO().getUnit());
+			dto.setThisMeasurementType(input.getThisQuantityDTO().getMeasurementType());
+
+			if (input.getThatQuantityDTO() != null) {
+				dto.setThatValue(input.getThatQuantityDTO().getValue());
+				dto.setThatUnit(input.getThatQuantityDTO().getUnit());
+				dto.setThatMeasurementType(input.getThatQuantityDTO().getMeasurementType());
+			}
+		}
 	}
 
 	@PostMapping("/add-with-target")
