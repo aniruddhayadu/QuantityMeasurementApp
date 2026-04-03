@@ -15,6 +15,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+
 import java.util.List;
 
 @Configuration
@@ -33,14 +34,25 @@ public class SecurityConfig {
 	@Bean
 	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 		return http.cors(cors -> cors.configurationSource(apiCorsConfigurationSource()))
+
 				.csrf(AbstractHttpConfigurer::disable)
+
 				.exceptionHandling(handler -> handler.authenticationEntryPoint(authenticationEntryPoint))
-				// FIX: Changed to IF_REQUIRED so Principal is not null during redirect
+
 				.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED))
-				.authorizeHttpRequests(auth -> auth.requestMatchers("/auth/**", "/login/**", "/oauth2/**",
-						"/swagger-ui/**", "/v3/api-docs/**", "/h2-console/**").permitAll().anyRequest().authenticated())
-				.oauth2Login(oauth -> oauth.defaultSuccessUrl("/auth/google/success", true))
+				.authorizeHttpRequests(auth -> auth.requestMatchers("/auth/**", // Login/Register endpoints
+						"/login/**", "/oauth2/**", // Google Auth endpoints
+						"/h2-console/**", // Database console
+						"/v3/api-docs", // Swagger JSON config (Very Important)
+						"/v3/api-docs/**", // Swagger API docs
+						"/swagger-ui/**", // Swagger UI files
+						"/swagger-ui.html", // Swagger UI entry point
+						"/swagger-resources/**", "/webjars/**" // Swagger CSS/JS files
+				).permitAll().anyRequest().authenticated() 
+				).oauth2Login(oauth -> oauth.defaultSuccessUrl("http://localhost:8080/auth/google/success", true))
+
 				.headers(headers -> headers.frameOptions(frame -> frame.disable()))
+
 				.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class).build();
 	}
 
