@@ -23,7 +23,7 @@ public class GoogleAuthController {
         
         if (principal == null) {
             // Agar fail hua toh React ke login page pe bhej do error message ke saath
-            response.sendRedirect("http://localhost:3000/login?error=auth_failed");
+            response.sendRedirect("https://quantitymeasurementapp-frontend-production-4a1a.up.railway.app/login?error=auth_failed");
             return;
         }
 
@@ -33,7 +33,7 @@ public class GoogleAuthController {
 
         // 2. Browser ko React App (port 3000) par redirect karo token ke saath
         // Hum token ko URL query parameter mein bhej rahe hain
-        String frontendRedirectUrl = "http://localhost:3000/login-success?token=" + token;
+        String frontendRedirectUrl = "https://quantitymeasurementapp-frontend-production-4a1a.up.railway.app/login-success?token=" + token;
         
         response.sendRedirect(frontendRedirectUrl);
     }
