@@ -22,7 +22,7 @@ public class GoogleAuthController {
     public void handleGoogleSuccess(@AuthenticationPrincipal OAuth2User principal, HttpServletResponse response) throws IOException {
         
         if (principal == null) {
-            // Agar fail hua toh React ke login page pe bhej do error message ke saath
+            // ✅ Frontend login page redirect with error
             response.sendRedirect("https://quantitymeasurementapp-frontend-production-4a1a.up.railway.app/login?error=auth_failed");
             return;
         }
@@ -31,8 +31,7 @@ public class GoogleAuthController {
         AuthResponse authResponse = googleAuthService.processGoogleUser(principal);
         String token = authResponse.getToken();
 
-        // 2. Browser ko React App (port 3000) par redirect karo token ke saath
-        // Hum token ko URL query parameter mein bhej rahe hain
+        // 2. ✅ Fix: Frontend Production URL par bhejo token ke saath
         String frontendRedirectUrl = "https://quantitymeasurementapp-frontend-production-4a1a.up.railway.app/login-success?token=" + token;
         
         response.sendRedirect(frontendRedirectUrl);

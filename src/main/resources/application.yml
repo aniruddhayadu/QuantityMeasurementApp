@@ -2,90 +2,30 @@ spring:
   application:
     name: Quantity Measurement App
   
-  # Server Port (8080 ya 8761 jo bhi tum use kar rahe ho)
-  server:
-    port: 8080
-
-  # JPA & Hibernate Configuration
-  jpa:
-    database-platform: org.hibernate.dialect.H2Dialect
-    hibernate:
-      ddl-auto: update
-    show-sql: true
-    properties:
-      hibernate:
-        format_sql: true
-
-  # H2 Database Configuration
-  h2:
-    console:
-      enabled: true
-      path: /h2-console
-  
+  # Ensure these are correctly nested under 'spring'
   datasource:
     url: jdbc:h2:mem:quantitymeasurementdb
     driverClassName: org.h2.Driver
     username: sa
-    password: ""
-    # Hikari Connection Pool
-    hikari:
-      maximum-pool-size: 10
-      minimum-idle: 2
-      connection-timeout: 30000
+    password:
 
-  # MVC Logging
-  mvc:
-    log-request-details: true
-    log-resolved-exception: true
-
-  # Google OAuth2 Configuration
   security:
     oauth2:
       client:
         registration:
           google:
-            client-id: ${GOOGLE_CLIENT_ID}
-            client-secret: ${GOOGLE_CLIENT_SECRET}
-            scope: profile, email
-            # Yahan {baseUrl} automatic handle hota hai, par port ka dhyan rakhna
+            client-id: "GOOGLE_CLIENT_ID"
+            client-secret: "GOOGLE_CLIENT_SECRET"
+            scope: 
+              - profile
+              - email
             redirect-uri: "{baseUrl}/login/oauth2/code/google"
 
-# Custom Repository Type
-repository:
-  type: database
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
 
-# Logging Configuration
-logging:
-  level:
-    root: INFO
-    org.springframework.web: DEBUG
-    org.hibernate.SQL: DEBUG
-    org.springframework.security: DEBUG
-    org.springframework.web.servlet.mvc: TRACE
-    org.hibernate.type.descriptor.sql.BasicBinder: TRACE
-    com.app.quantitymeasurement: DEBUG
-    com.example.personrestapi: DEBUG
-  pattern:
-    console: "%d{yyyy-MM-dd HH:mm:ss} - %logger{36}:%line - %msg%n"
-
-# Swagger / OpenAPI Docs
-springdoc:
-  api-docs:
-    path: /api-docs
-  swagger-ui:
-    path: /swagger-ui.html
-    enabled: true
-
-# Spring Boot Actuator
-management:
-  endpoints:
-    web:
-      exposure:
-        include: health, metrics, info
-  endpoint:
-    health:
-      show-details: always
-    metrics:
-      enabled: true
-    info:
-      enabled: true
+# 'server' is a TOP-LEVEL node, it should NOT be under 'spring'
+server:
+  port: 8080
