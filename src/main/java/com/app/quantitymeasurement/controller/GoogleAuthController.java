@@ -23,7 +23,7 @@ public class GoogleAuthController {
         
         if (principal == null) {
             // ✅ Frontend login page redirect with error
-            response.sendRedirect("https://quantitymeasurementapp-frontend-production-4a1a.up.railway.app/login?error=auth_failed");
+            response.sendRedirect("https://quantitymeasurementapp-frontend-production-ebb9.up.railway.app/login?error=auth_failed");
             return;
         }
 
@@ -32,7 +32,7 @@ public class GoogleAuthController {
         String token = authResponse.getToken();
 
         // 2. ✅ Fix: Frontend Production URL par bhejo token ke saath
-        String frontendRedirectUrl = "https://quantitymeasurementapp-frontend-production-4a1a.up.railway.app/login-success?token=" + token;
+        String frontendRedirectUrl = "https://quantitymeasurementapp-frontend-production-ebb9.up.railway.app/login-success?token=" + token;
         
         response.sendRedirect(frontendRedirectUrl);
     }
