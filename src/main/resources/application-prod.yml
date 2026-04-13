@@ -1,0 +1,53 @@
+spring:
+  # 1. Database Configuration (MySQL)
+  datasource:
+    url: jdbc:mysql://localhost:3306/quantity_measurement_db?useSSL=false&serverTimezone=UTC
+    username: ${DB_USERNAME:prod_user}
+    password: ${DB_PASSWORD:prod_password_123}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    
+    # 3. Connection Pool (Optimized for Production)
+    hikari:
+      maximum-pool-size: 20
+      minimum-idle: 5
+      idle-timeout: 300000
+      max-lifetime: 1200000
+      connection-timeout: 20000
+
+  # 2. JPA/Hibernate Production Settings
+  jpa:
+    database-platform: org.hibernate.dialect.MySQL8Dialect
+    hibernate:
+      ddl-auto: validate # Best for prod: sirf validate karta hai, table udta nahi
+    show-sql: false
+    properties:
+      hibernate:
+        format_sql: false
+        jdbc:
+          batch_size: 25 # Performance optimization
+
+# 4. Logging (Reduced verbosity for performance)
+logging:
+  level:
+    root: WARN
+    com.app.quantitymeasurement: INFO
+    org.springframework.web: INFO
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
+
+# 5. Actuator Security
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health, info, metrics
+  endpoint:
+    health:
+      show-details: never # Security ke liye details hide rakhi hain
+
+# 6. Swagger/OpenAPI
+springdoc:
+  api-docs:
+    enabled: true
+  swagger-ui:
+    enabled: true

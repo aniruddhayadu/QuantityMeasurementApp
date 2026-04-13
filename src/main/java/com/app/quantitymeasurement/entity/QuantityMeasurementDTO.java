@@ -28,15 +28,26 @@ public class QuantityMeasurementDTO {
 	public String errorMessage;
 
 	public QuantityMeasurementDTO from(QuantityMeasurementEntity entity) {
-		if (entity == null)
-			return this;
-		this.resultValue = entity.getResultValue();
-		this.resultUnit = entity.getResultUnit();
-		this.resultMeasurementType = entity.getResultMeasurementType();
-		this.resultString = entity.getResultString();
-		this.error = entity.isError();
-		this.errorMessage = entity.getErrorMessage();
-		return this;
+	    if (entity == null) return this;
+	    
+	 
+	    this.resultValue = entity.getResultValue();
+	    this.resultUnit = entity.getResultUnit();
+	    this.resultMeasurementType = entity.getResultMeasurementType();
+	    this.resultString = entity.getResultString();
+	    this.error = entity.isError();
+	    this.errorMessage = entity.getErrorMessage();
+
+	 
+	    this.thisValue = entity.getThisValue();
+	    this.thisUnit = entity.getThisUnit();
+	    this.thisMeasurementType = entity.getThisMeasurementType();
+	    this.thatValue = entity.getThatValue();
+	    this.thatUnit = entity.getThatUnit();
+	    this.thatMeasurementType = entity.getThatMeasurementType();
+	    this.operation = entity.getOperation();
+	    
+	    return this;
 	}
 
 	public List<QuantityMeasurementDTO> fromList(List<QuantityMeasurementEntity> entities) {

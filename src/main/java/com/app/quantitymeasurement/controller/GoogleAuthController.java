@@ -9,30 +9,32 @@ import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
 import java.io.IOException;
 
 @RestController
 @RequestMapping("/auth/google")
 public class GoogleAuthController {
 
-	@Autowired
-	private GoogleAuthService googleAuthService;
+    @Autowired
+    private GoogleAuthService googleAuthService;
 
-	@GetMapping("/success")
-	public void handleGoogleSuccess(@AuthenticationPrincipal OAuth2User principal, HttpServletResponse response)
-			throws IOException {
+    @GetMapping("/success")
+    public void handleGoogleSuccess(@AuthenticationPrincipal OAuth2User principal, HttpServletResponse response) throws IOException {
+        
+        if (principal == null) {
+            // Agar fail hua toh React ke login page pe bhej do error message ke saath
+            response.sendRedirect("http://localhost:3000/login?error=auth_failed");
+            return;
+        }
 
-		if (principal == null) {
-			response.sendRedirect("http://localhost:3000/login?error=auth_failed");
-			return;
-		}
+        // 1. JWT Token generate karo
+        AuthResponse authResponse = googleAuthService.processGoogleUser(principal);
+        String token = authResponse.getToken();
 
-		AuthResponse authResponse = googleAuthService.processGoogleUser(principal);
-		String token = authResponse.getToken();
-
-		String redirectUrl = "http://localhost:3000/?token=" + token;
-
-		response.sendRedirect(redirectUrl);
-	}
+        // 2. Browser ko React App (port 3000) par redirect karo token ke saath
+        // Hum token ko URL query parameter mein bhej rahe hain
+        String frontendRedirectUrl = "http://localhost:3000/login-success?token=" + token;
+        
+        response.sendRedirect(frontendRedirectUrl);
+    }
 }
