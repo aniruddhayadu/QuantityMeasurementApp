@@ -47,9 +47,9 @@ public class SecurityConfig {
 						"/v3/api-docs/**", // Swagger API docs
 						"/swagger-ui/**", // Swagger UI files
 						"/swagger-ui.html", // Swagger UI entry point
-						"/swagger-resources/**", "/webjars/**" // Swagger CSS/JS files
-				).permitAll().anyRequest().authenticated() // Baaki sab ke liye Token chahiye
-				).oauth2Login(oauth -> oauth.defaultSuccessUrl("https://quantitymeasurementapp-production-5687.up.railway.app/auth/google/success", true))
+						"/swagger-resources/**", "/webjars/**", // Swagger CSS/JS files
+						"/error").permitAll().anyRequest().authenticated() // Baaki sab ke liye Token chahiye
+				).oauth2Login(oauth -> oauth.defaultSuccessUrl("http://localhost:8080/auth/google/success", true))
 
 				.headers(headers -> headers.frameOptions(frame -> frame.disable()))
 
@@ -59,7 +59,7 @@ public class SecurityConfig {
 	@Bean
 	public CorsConfigurationSource apiCorsConfigurationSource() {
 		CorsConfiguration config = new CorsConfiguration();
-		config.setAllowedOrigins(List.of("http://localhost:3000", "http://localhost:8080", "http://127.0.0.1:5500","https://quantitymeasurementapp-frontend-production-ebb9.up.railway.app"));
+		config.setAllowedOrigins(List.of("http://localhost:3000", "http://localhost:8080", "http://127.0.0.1:5500"));
 		config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
 		config.setAllowedHeaders(List.of("*"));
 		config.setAllowCredentials(true);

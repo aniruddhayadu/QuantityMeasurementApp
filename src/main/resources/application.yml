@@ -1,22 +1,26 @@
 spring:
   application:
     name: Quantity Measurement App
-  
-  # Ensure these are correctly nested under 'spring'
+
   datasource:
     url: jdbc:h2:mem:quantitymeasurementdb
     driverClassName: org.h2.Driver
     username: sa
     password:
 
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+
   security:
     oauth2:
       client:
         registration:
           google:
-            client-id: "GOOGLE_CLIENT_ID"
-            client-secret: "GOOGLE_CLIENT_SECRET"
-            scope: 
+            client-id: ${GOOGLE_CLIENT_ID}
+            client-secret: ${GOOGLE_CLIENT_SECRET}
+            scope:
               - profile
               - email
             redirect-uri: "{baseUrl}/login/oauth2/code/google"
@@ -26,6 +30,5 @@ spring:
       ddl-auto: update
     show-sql: true
 
-# 'server' is a TOP-LEVEL node, it should NOT be under 'spring'
 server:
-  port: 8080
+  port: ${PORT:8080}
