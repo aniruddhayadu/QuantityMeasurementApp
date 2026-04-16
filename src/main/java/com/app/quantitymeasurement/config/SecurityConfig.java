@@ -1,6 +1,7 @@
 package com.app.quantitymeasurement.config;
 
 import com.app.quantitymeasurement.exception.JwtAuthenticationEntryPoint;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -23,48 +24,67 @@ import java.util.List;
 @RequiredArgsConstructor
 public class SecurityConfig {
 
-	private final JwtFilter jwtFilter;
-	private final JwtAuthenticationEntryPoint authenticationEntryPoint;
+    private final JwtFilter jwtFilter;
+    private final JwtAuthenticationEntryPoint authenticationEntryPoint;
 
-	@Bean
-	public PasswordEncoder passwordEncoder() {
-		return new BCryptPasswordEncoder();
-	}
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
 
-	@Bean
-	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-		return http.cors(cors -> cors.configurationSource(apiCorsConfigurationSource()))
+    @Bean
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        return http
+                .cors(cors -> cors.configurationSource(apiCorsConfigurationSource()))
+                .csrf(AbstractHttpConfigurer::disable)
+                .exceptionHandling(handler -> handler.authenticationEntryPoint(authenticationEntryPoint))
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED))
 
-				.csrf(AbstractHttpConfigurer::disable)
+                .authorizeHttpRequests(auth -> auth
+                        .requestMatchers(
+                                "/auth/**",
+                                "/login/**",
+                                "/oauth2/**",
+                                "/h2-console/**",
+                                "/v3/api-docs/**",
+                                "/swagger-ui/**",
+                                "/swagger-ui.html",
+                                "/swagger-resources/**",
+                                "/webjars/**",
+                                "/error"
+                        ).permitAll()
+                        .anyRequest().authenticated()
+                )
 
-				.exceptionHandling(handler -> handler.authenticationEntryPoint(authenticationEntryPoint))
+                // 🔥 IMPORTANT FIX HERE
+                .oauth2Login(oauth -> oauth
+                        .successHandler((request, response, authentication) -> {
+                            // 👇 CHANGE THIS URL ACCORDING TO FRONTEND
+                            response.sendRedirect("http://localhost:3000");
+                        })
+                )
 
-				.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED))
-				.authorizeHttpRequests(auth -> auth.requestMatchers("/auth/**", // Login/Register endpoints
-						"/login/**", "/oauth2/**", // Google Auth endpoints
-						"/h2-console/**", // Database console
-						"/v3/api-docs", // Swagger JSON config (Very Important)
-						"/v3/api-docs/**", // Swagger API docs
-						"/swagger-ui/**", // Swagger UI files
-						"/swagger-ui.html", // Swagger UI entry point
-						"/swagger-resources/**", "/webjars/**", // Swagger CSS/JS files
-						"/error").permitAll().anyRequest().authenticated() // Baaki sab ke liye Token chahiye
-				).oauth2Login(oauth -> oauth.defaultSuccessUrl("http://localhost:3000", true))
+                .headers(headers -> headers.frameOptions(frame -> frame.disable()))
+                .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
+                .build();
+    }
 
-				.headers(headers -> headers.frameOptions(frame -> frame.disable()))
+    @Bean
+    public CorsConfigurationSource apiCorsConfigurationSource() {
+        CorsConfiguration config = new CorsConfiguration();
 
-				.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class).build();
-	}
+        config.setAllowedOrigins(List.of(
+                "http://localhost:3000",
+                "https://quantitymeasurementapp-production-16d3.up.railway.app"
+        ));
 
-	@Bean
-	public CorsConfigurationSource apiCorsConfigurationSource() {
-		CorsConfiguration config = new CorsConfiguration();
-		config.setAllowedOrigins(List.of("http://localhost:3000", "http://localhost:8080", "http://127.0.0.1:5500"));
-		config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
-		config.setAllowedHeaders(List.of("*"));
-		config.setAllowCredentials(true);
-		UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-		source.registerCorsConfiguration("/**", config);
-		return source;
-	}
+        config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+        config.setAllowedHeaders(List.of("*"));
+        config.setAllowCredentials(true);
+
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", config);
+
+        return source;
+    }
 }
