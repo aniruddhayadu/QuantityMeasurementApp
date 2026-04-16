@@ -15,22 +15,22 @@ import java.io.IOException;
 @RequestMapping("/auth/google")
 public class GoogleAuthController {
 
-	@Autowired
-	private GoogleAuthService googleAuthService;
+    @Autowired
+    private GoogleAuthService googleAuthService;
 
-	@GetMapping("/success")
-	public void handleGoogleSuccess(@AuthenticationPrincipal OAuth2User principal, HttpServletResponse response)
-	        throws IOException {
+    @GetMapping("/success")
+    public void handleGoogleSuccess(@AuthenticationPrincipal OAuth2User principal, HttpServletResponse response)
+            throws IOException {
 
-	    if (principal == null) {
-	        response.sendRedirect("https://quantitymeasurementapp-frontend-production-5afa.up.railway.app/login?error=auth_failed");
-	        return;
-	    }
+        if (principal == null) {
+            response.sendRedirect("https://quantity-measurement-app-frontend-seven-zeta.vercel.app/login?error=auth_failed");
+            return;
+        }
 
-	    AuthResponse authResponse = googleAuthService.processGoogleUser(principal);
-	    String token = authResponse.getToken();
+        AuthResponse authResponse = googleAuthService.processGoogleUser(principal);
+        String token = authResponse.getToken();
 
-	    String frontendRedirectUrl = "https://quantitymeasurementapp-frontend-production-5afa.up.railway.app/login?token=" + token;
-	    response.sendRedirect(frontendRedirectUrl);
-	}
+        String frontendRedirectUrl = "https://quantity-measurement-app-frontend-seven-zeta.vercel.app/login?token=" + token;
+        response.sendRedirect(frontendRedirectUrl);
+    }
 }
