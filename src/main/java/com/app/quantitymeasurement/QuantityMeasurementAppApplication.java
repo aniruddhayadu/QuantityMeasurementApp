@@ -12,5 +12,6 @@ public class QuantityMeasurementAppApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(QuantityMeasurementAppApplication.class, args);
 		System.out.println("Quantity Measurement App Application Running Successfully...");
+		System.out.println("CLIENT ID: " + System.getenv("GOOGLE_CLIENT_ID"));
 	}
 }
