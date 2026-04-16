@@ -33,7 +33,7 @@ public class GoogleAuthController {
 		String token = authResponse.getToken();
 
 		// 2. ✅ Fix: Frontend Production URL par bhejo token ke saath
-		String frontendRedirectUrl = "http://localhost:3000/login-success?token=" + token;
+		String frontendRedirectUrl = "https://quantitymeasurementapp-frontend-production-5afa.up.railway.app/login-success?token=" + token;
 		response.sendRedirect(frontendRedirectUrl);
 	}
 }

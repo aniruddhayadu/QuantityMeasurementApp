@@ -1,7 +1,6 @@
 package com.app.quantitymeasurement.config;
 
 import com.app.quantitymeasurement.exception.JwtAuthenticationEntryPoint;
-import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -43,8 +42,8 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(
                                 "/auth/**",
-                                "/login/**",
                                 "/oauth2/**",
+                                "/login/**",
                                 "/h2-console/**",
                                 "/v3/api-docs/**",
                                 "/swagger-ui/**",
@@ -56,12 +55,10 @@ public class SecurityConfig {
                         .anyRequest().authenticated()
                 )
 
-                // 🔥 IMPORTANT FIX HERE
+                // ✅ SIMPLE & CORRECT OAUTH CONFIG
                 .oauth2Login(oauth -> oauth
-                        .successHandler((request, response, authentication) -> {
-                            // 👇 CHANGE THIS URL ACCORDING TO FRONTEND
-                            response.sendRedirect("http://localhost:3000");
-                        })
+                        .loginPage("/oauth2/authorization/google") // 🔥 fix /login issue
+                        .defaultSuccessUrl("/auth/google/success", true) // 🔥 redirect frontend
                 )
 
                 .headers(headers -> headers.frameOptions(frame -> frame.disable()))
@@ -75,7 +72,7 @@ public class SecurityConfig {
 
         config.setAllowedOrigins(List.of(
                 "http://localhost:3000",
-                "https://quantitymeasurementapp-production-16d3.up.railway.app"
+                "https://quantitymeasurementapp-frontend-production-5afa.up.railway.app"
         ));
 
         config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
