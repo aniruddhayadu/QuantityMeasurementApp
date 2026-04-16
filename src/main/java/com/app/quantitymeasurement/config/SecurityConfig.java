@@ -49,7 +49,7 @@ public class SecurityConfig {
 						"/swagger-ui.html", // Swagger UI entry point
 						"/swagger-resources/**", "/webjars/**", // Swagger CSS/JS files
 						"/error").permitAll().anyRequest().authenticated() // Baaki sab ke liye Token chahiye
-				).oauth2Login(oauth -> oauth.defaultSuccessUrl("http://localhost:8080/auth/google/success", true))
+				).oauth2Login(oauth -> oauth.defaultSuccessUrl("http://localhost:3000", true))
 
 				.headers(headers -> headers.frameOptions(frame -> frame.disable()))
 
