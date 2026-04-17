@@ -12,6 +12,8 @@ target/
 .settings
 .springBeans
 .sts4-cache
+application.yml
+application.properties
 
 ### IntelliJ IDEA ###
 .idea
@@ -31,31 +33,3 @@ build/
 
 ### VS Code ###
 .vscode/
-
-# Maven
-target/
-pom.xml.tag
-pom.xml.releaseBackup
-pom.xml.versionsBackup
-pom.xml.next
-release.properties
-**/application.properties
-application.properties
-application-*.properties
-
-# Eclipse
-bin/
-.settings/
-.metadata/
-.project
-.classpath
-
-# STS
-.springBeans
-
-# IntelliJ
-.idea/
-*.iml
-
-# Logs
-*.log
